@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class UIManager {
     private Map<String,UIScreen> screens;
-    private String activeScreen = "mainScreen";
+    public static String activeScreen = "mainScreen";
 
 
     public UIManager(){
@@ -18,8 +18,9 @@ public class UIManager {
 
     public void render(){
         // Rendering the active screen
-        screens.get(activeScreen).getStage().act(Gdx.graphics.getDeltaTime());
-        screens.get(activeScreen).getStage().act(Gdx.graphics.getDeltaTime());
-        screens.get(activeScreen).getStage().draw();
+        if(activeScreen!="") {
+            screens.get(activeScreen).getStage().act(Gdx.graphics.getDeltaTime());
+            screens.get(activeScreen).getStage().draw();
+        }
     }
 }
