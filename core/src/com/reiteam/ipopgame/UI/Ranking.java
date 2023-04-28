@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -20,12 +21,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class Ranking extends UIScreen{
     private Stage stage;
     private Label.LabelStyle labelStyle;
     public int fetched;
     public int actualPage=1;
     private Button next,back;
+    private ArrayList<Actor> actors=new ArrayList<>();
 
     public Ranking(){
         setupFontStyle();
@@ -49,7 +53,7 @@ public class Ranking extends UIScreen{
                 //UIManager.activeScreen="";
                 if(back.isDisabled()==false){
                     actualPage--;
-                    fetchRows(); // TODO method must remove elements and put news
+                    fetchRows();
                     if(actualPage==1){
                         back.setDisabled(true);
                     }
@@ -66,7 +70,8 @@ public class Ranking extends UIScreen{
                 //UIManager.activeScreen="";
                 if(next.isDisabled()==false){
                     actualPage++;
-                    fetchRows(); // TODO method must remove elements and put news
+                    fetchRows();
+                    back.setDisabled(false);
                 }
                 return true;
             }
@@ -74,10 +79,12 @@ public class Ranking extends UIScreen{
         next.setDisabled(true);
 
         stage.addActor(next);
-        Button page = createButton(String.valueOf(actualPage),"ui/Colored/buttonGrey.png",(MainGame.res[0]/2)-50,MainGame.res[1]-650,50,60);
+        Button page = createButton("","ui/Colored/buttonGrey.png",(MainGame.res[0]/2)-50,MainGame.res[1]-650,50,60);
         // Adding buttons without a actionListener to the stage
         stage.addActor(page);
-
+        Actor lab=(createLabel(String.valueOf(actualPage),(MainGame.res[0]/2)-30,MainGame.res[1]-635));
+        actors.add(lab);
+        stage.addActor(lab);
         // POST
         fetchRows();
         // end POST
@@ -109,6 +116,15 @@ public class Ranking extends UIScreen{
         return button;
     }
 
+    private Label createLabel(String text,int x,int y){
+        Skin skin = new Skin();
+        skin.add("default", labelStyle);
+        Label label = new Label(text, skin); // Making a label instance
+        label.setPosition(x, y); // Center label
+        label.setAlignment(Align.center);
+        return label;
+    }
+
     private void fetchRows(){
         try {
             JSONObject obj = new JSONObject("{}");
@@ -120,19 +136,30 @@ public class Ranking extends UIScreen{
                 try {
                     objResponse = new JSONObject(response);
                     if (objResponse.getString("status").equals("OK")) {
+                        for (int i = 0; i < actors.size(); i++) {
+                            actors.get(i).remove();
+                        }
+                        actors=new ArrayList<>();
+                        Actor lab=(createLabel(String.valueOf(actualPage),(MainGame.res[0]/2)-30,MainGame.res[1]-635));
+                        actors.add(lab);
+                        stage.addActor(lab);
                         JSONArray data= objResponse.getJSONArray("result");
                         fetched=data.length();
-
-                        for (int i = 0; (i < data.length()) && (i<10); i++) {
-
-                            // TODO create here the rows!!!
-                            System.out.println(data.get(i));
-
-                        }
                         if(fetched==11){
                             next.setDisabled(false);
+                        }else{
+                            next.setDisabled(true);
                         }
-                        //Log.i("i",r.toString());
+                        for (int i = 0; (i < data.length()) && (i<10); i++) {
+
+                            //System.out.println(data.get(i));
+                            Actor a=createLabel(data.getJSONObject(i).getString("name")+" : "+ data.getJSONObject(i).getInt("score"),(MainGame.res[0]/2)-165,MainGame.res[1]-(130+(i*30)));
+                            //stage.addActor(createLabel(data.getJSONObject(i).getString("name")+" : "+ data.getJSONObject(i).getInt("score"),(MainGame.res[0]/2)-165,MainGame.res[1]-(130+(i*30))));
+                            stage.addActor(a);
+                            actors.add(a);
+                            //a.remove();
+                        }
+
                     }
 
                 } catch (JSONException e) {
