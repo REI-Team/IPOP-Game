@@ -18,7 +18,7 @@ android {
     }
     defaultConfig {
         applicationId "com.reiteam.ipopgame"
-        minSdkVersion 14
+        minSdkVersion 26
         targetSdkVersion 33
         versionCode 1
         versionName "1.0"
@@ -83,6 +83,11 @@ task run(type: Exec) {
 
     def adb = path + "/platform-tools/adb"
     commandLine "$adb", 'shell', 'am', 'start', '-n', 'com.reiteam.ipopgame/com.reiteam.ipopgame.AndroidLauncher'
+}
+
+dependencies {
+    implementation files('..\\core\\src\\com\\reiteam\\ipopgame\\utils\\json-20220924.jar')
+    implementation files('..\\core\\src\\com\\reiteam\\ipopgame\\UI\\json-20220924.jar')
 }
 
 eclipse.project.name = appName + "-android"

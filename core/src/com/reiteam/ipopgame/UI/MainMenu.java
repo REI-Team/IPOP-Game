@@ -51,7 +51,16 @@ public class MainMenu extends UIScreen{
         stage.addActor(createButton("Triar nom","ui/Colored/buttonGrey.png",(MainGame.res[0]/2)-125,MainGame.res[1]-440,250,60));
         stage.addActor(createButton("Triar cicle","ui/Colored/buttonGrey.png",(MainGame.res[0]/2)-125,MainGame.res[1]-510,250,60));
         stage.addActor(createButton("Triar personatge","ui/Colored/buttonGrey.png",(MainGame.res[0]/2)-125,MainGame.res[1]-580,250,60));
-        stage.addActor(createButton("Rànking","ui/Colored/buttonGrey.png",(MainGame.res[0]/2)-125,MainGame.res[1]-650,250,60));
+
+        Button rank=createButton("Rànking","ui/Colored/buttonGrey.png",(MainGame.res[0]/2)-125,MainGame.res[1]-650,250,60);
+        rank.addListener(new InputListener() {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                // Aquí puedes agregar la acción que deseas realizar al tocar el botón
+                UIManager.activeScreen="Ranking";
+                return true;
+            }
+        });
+        stage.addActor(rank);
 
     }
 

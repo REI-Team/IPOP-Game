@@ -21,6 +21,7 @@ public class MainGame extends ApplicationAdapter {
 	public static final int[] res = {1280,720};
 	private Animation<TextureRegion> running;
 	private float stateTime = 0;
+
 	
 	@Override
 	public void create () {
@@ -46,6 +47,7 @@ public class MainGame extends ApplicationAdapter {
 		batch.begin();
 		uimanager.render(); //Rendering UI
 		// TODO improove this, only for testing
+		//System.out.println(UIManager.activeScreen);
 		if(UIManager.activeScreen==""){
 			stateTime += Gdx.graphics.getDeltaTime();
 			batch.draw(img, 0, 0);
