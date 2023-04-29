@@ -14,14 +14,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Align;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.reiteam.ipopgame.MainGame;
 import com.reiteam.ipopgame.utils.UtilsHTTP;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class Ranking extends UIScreen{
     private Stage stage;
@@ -127,15 +129,17 @@ public class Ranking extends UIScreen{
 
     private void fetchRows(){
         try {
-            JSONObject obj = new JSONObject("{}");
-            obj.put("start", (actualPage-1)*10);
-            obj.put("elements",11);
-            UtilsHTTP.sendPOST(UtilsHTTP.protocol + "://" + UtilsHTTP.host + "/API/get_ranking", obj.toString(), (response) -> {
+            ObjectMapper mapper = new ObjectMapper();
+            ObjectNode rootNode = mapper.createObjectNode();
+            rootNode.put("start", (actualPage-1)*10);
+            rootNode.put("elements",11);
+            String jsonString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(rootNode);
+            UtilsHTTP.sendPOST(UtilsHTTP.protocol + "://" + UtilsHTTP.host + "/API/get_ranking", jsonString, (response) -> {
                 //activity.runOnUiThread(()->{
-                JSONObject objResponse = null;
+                ObjectMapper objectMapper = new ObjectMapper();
                 try {
-                    objResponse = new JSONObject(response);
-                    if (objResponse.getString("status").equals("OK")) {
+                    Map<String, Object> reciv = objectMapper.readValue(response, Map.class);
+                    if (reciv.get("status").equals("OK")) {
                         for (int i = 0; i < actors.size(); i++) {
                             actors.get(i).remove();
                         }
@@ -143,17 +147,19 @@ public class Ranking extends UIScreen{
                         Actor lab=(createLabel(String.valueOf(actualPage),(MainGame.res[0]/2)-30,MainGame.res[1]-635));
                         actors.add(lab);
                         stage.addActor(lab);
-                        JSONArray data= objResponse.getJSONArray("result");
-                        fetched=data.length();
+
+                        Gdx.app.debug("Etiqueta", reciv.get("result").getClass().toString());
+                        ArrayList<Map<String,Object>> data = (ArrayList<Map<String, Object>>) reciv.get("result");
+                        fetched=data.size();
                         if(fetched==11){
                             next.setDisabled(false);
                         }else{
                             next.setDisabled(true);
                         }
-                        for (int i = 0; (i < data.length()) && (i<10); i++) {
-
+                        for (int i = 0; (i < data.size()) && (i<10); i++) {
+                            Map<String,Object> player = data.get(i);
                             //System.out.println(data.get(i));
-                            Actor a=createLabel(data.getJSONObject(i).getString("name")+" : "+ data.getJSONObject(i).getInt("score"),(MainGame.res[0]/2)-165,MainGame.res[1]-(130+(i*30)));
+                            Actor a=createLabel(player.get("name")+" : "+ player.get("score"),(MainGame.res[0]/2)-165,MainGame.res[1]-(130+(i*30)));
                             //stage.addActor(createLabel(data.getJSONObject(i).getString("name")+" : "+ data.getJSONObject(i).getInt("score"),(MainGame.res[0]/2)-165,MainGame.res[1]-(130+(i*30))));
                             stage.addActor(a);
                             actors.add(a);
@@ -162,11 +168,11 @@ public class Ranking extends UIScreen{
 
                     }
 
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             });
-        } catch (JSONException es) {
+        } catch (JsonProcessingException es) {
             es.printStackTrace();
         }
     }

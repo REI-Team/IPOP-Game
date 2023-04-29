@@ -41,7 +41,7 @@ public class MainMenu extends UIScreen{
         play.addListener(new InputListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 // Aquí puedes agregar la acción que deseas realizar al tocar el botón
-                UIManager.activeScreen="";
+                UIManager.showScreen("");
                 return true;
             }
         });
@@ -56,7 +56,7 @@ public class MainMenu extends UIScreen{
         rank.addListener(new InputListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 // Aquí puedes agregar la acción que deseas realizar al tocar el botón
-                UIManager.activeScreen="Ranking";
+                UIManager.showScreen("Ranking");
                 return true;
             }
         });

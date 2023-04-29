@@ -49,6 +49,7 @@ project(":desktop") {
 
     dependencies {
         implementation project(":core")
+
         api "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         
@@ -108,6 +109,8 @@ project(":core") {
 
     dependencies {
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
-        implementation 'org.json:json:20230227'
+        implementation 'com.fasterxml.jackson.core:jackson-core:2.10.1'
+        implementation 'com.fasterxml.jackson.core:jackson-annotations:2.10.1'
+        implementation 'com.fasterxml.jackson.core:jackson-databind:2.10.1'
     }
 }

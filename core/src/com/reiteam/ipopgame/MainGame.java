@@ -1,5 +1,6 @@
 package com.reiteam.ipopgame;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -25,6 +26,7 @@ public class MainGame extends ApplicationAdapter {
 	
 	@Override
 	public void create () {
+		Gdx.app.setLogLevel(Application.LOG_DEBUG);
 		camera = new OrthographicCamera(res[0], res[1]);
 		camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
 		camera.update();
