@@ -20,6 +20,7 @@ import com.reiteam.ipopgame.MainGame;
 
 public class MainMenu extends UIScreen{
     private Stage stage;
+    private Button play,multiplayer,chooseName,chooseGrade,chooseCharacter,ranking;
     private Label.LabelStyle labelStyle;
 
     public MainMenu(){
@@ -37,30 +38,30 @@ public class MainMenu extends UIScreen{
         logo.setPosition((MainGame.res[0]/2)-195,MainGame.res[1]-200);
         stage.addActor(logo);
         // Adding buttons
-        Button play = createButton("Un jugador","ui/Colored/buttonGrey.png",(MainGame.res[0]/2)-125,MainGame.res[1]-300,250,60);
+        play = createButton("Un jugador","ui/Colored/buttonBlue.png",(MainGame.res[0]/2)-125,MainGame.res[1]-300,250,60);
         play.addListener(new InputListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                // Aquí puedes agregar la acción que deseas realizar al tocar el botón
-                UIManager.showScreen("");
+                if(!play.isDisabled()){
+                    UIManager.showScreen("");
+                    return true;
+                }
                 return true;
             }
         });
-        stage.addActor(play);
+        disableButton(play,true);
         // Adding buttons without a actionListener to the stage
-        stage.addActor(createButton("Multijugador","ui/Colored/buttonGrey.png",(MainGame.res[0]/2)-125,MainGame.res[1]-370,250,60));
-        stage.addActor(createButton("Triar nom","ui/Colored/buttonGrey.png",(MainGame.res[0]/2)-125,MainGame.res[1]-440,250,60));
-        stage.addActor(createButton("Triar cicle","ui/Colored/buttonGrey.png",(MainGame.res[0]/2)-125,MainGame.res[1]-510,250,60));
-        stage.addActor(createButton("Triar personatge","ui/Colored/buttonGrey.png",(MainGame.res[0]/2)-125,MainGame.res[1]-580,250,60));
+        multiplayer = createButton("Multijugador","ui/Colored/buttonBlue.png",(MainGame.res[0]/2)-125,MainGame.res[1]-370,250,60);
+        chooseName = createButton("Triar nom","ui/Colored/buttonBlue.png",(MainGame.res[0]/2)-125,MainGame.res[1]-440,250,60);
+        chooseGrade = createButton("Triar cicle","ui/Colored/buttonBlue.png",(MainGame.res[0]/2)-125,MainGame.res[1]-510,250,60);
+        chooseCharacter = createButton("Triar personatge","ui/Colored/buttonBlue.png",(MainGame.res[0]/2)-125,MainGame.res[1]-580,250,60);
 
-        Button rank=createButton("Rànking","ui/Colored/buttonGrey.png",(MainGame.res[0]/2)-125,MainGame.res[1]-650,250,60);
-        rank.addListener(new InputListener() {
+        ranking=createButton("Rànking","ui/Colored/buttonBlue.png",(MainGame.res[0]/2)-125,MainGame.res[1]-650,250,60);
+        ranking.addListener(new InputListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                // Aquí puedes agregar la acción que deseas realizar al tocar el botón
                 UIManager.showScreen("Ranking");
                 return true;
             }
         });
-        stage.addActor(rank);
 
     }
 
@@ -86,7 +87,36 @@ public class MainMenu extends UIScreen{
         label.setPosition(button.getX() + button.getWidth()/2, button.getY() + button.getHeight()/2); // Center label
         label.setAlignment(Align.center);
         button.add(label);
+        stage.addActor(button);
         return button;
+    }
+    public void disableButton(Button button, Boolean isDisabled){
+        if(isDisabled){
+            TextureRegion nuevaTextura = new TextureRegion(new Texture("ui/Colored/buttonDisabled.png"));
+            Button.ButtonStyle nuevoEstilo = new Button.ButtonStyle();
+            nuevoEstilo.up = new Image(nuevaTextura).getDrawable();
+            Button.ButtonStyle estiloActual = button.getStyle();
+            estiloActual.up = new Image(nuevaTextura).getDrawable();
+            button.setStyle(estiloActual);
+            button.setDisabled(true);
+        }else {
+            TextureRegion nuevaTextura = new TextureRegion(new Texture("ui/Colored/buttonBlue.png"));
+            Button.ButtonStyle nuevoEstilo = new Button.ButtonStyle();
+            nuevoEstilo.up = new Image(nuevaTextura).getDrawable();
+            Button.ButtonStyle estiloActual = button.getStyle();
+            estiloActual.up = new Image(nuevaTextura).getDrawable();
+            button.setStyle(estiloActual);
+            button.setDisabled(false);
+        }
+    }
+    public void disableButton(String buttonName,Boolean isDisabled){
+        switch (buttonName){
+            case "play":
+                disableButton(play,isDisabled);
+            default:
+                disableButton(play,isDisabled);
+        }
+
     }
 
     @Override
