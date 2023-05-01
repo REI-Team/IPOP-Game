@@ -28,7 +28,7 @@ public class MainMenu extends UIScreen{
     public MainMenu(){
         setupFontStyle();
         // Setting up music and sound effects
-        //playMusic();
+        playMusic();
         button_click = Gdx.audio.newMusic(Gdx.files.internal("music/button_click.mp3"));
         stage = new Stage(MainGame.viewport);
         //Setting a background image
@@ -47,7 +47,7 @@ public class MainMenu extends UIScreen{
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 if(!play.isDisabled()){
                     button_click.play();
-                    //backgroundMusic.stop();
+                    backgroundMusic.stop();
                     UIManager.showScreen("");
                     return true;
                 }

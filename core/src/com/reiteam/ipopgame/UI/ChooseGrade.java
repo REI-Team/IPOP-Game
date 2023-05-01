@@ -125,7 +125,7 @@ public class ChooseGrade extends UIScreen {
             for (int i = 0; i < 5; i++) {
                 if(5*(page-1)+i<grades_family.length) {
                     String family = grades_family[5*(page-1)+i];
-                    Button familyButton = createButton(family, "ui/Colored/buttonOrange-Medium.png", (MainGame.res[0] / 2) - 225, MainGame.res[1] - (100 + 70 * i), 450, 60);
+                    Button familyButton = createButton(family, "ui/Colored/buttonOrange-Medium.png", (MainGame.res[0] / 2) - 225, MainGame.res[1] - (200 + 70 * i), 450, 60);
                     familyButton.addListener(new InputListener() {
                         public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                             // Aquí puedes agregar la acción que deseas realizar al tocar el botón
@@ -162,7 +162,7 @@ public class ChooseGrade extends UIScreen {
             });
             for (int i = 0; i < grades.get(family).length; i++) {
                 String grade = grades.get(family)[i];
-                Button gradeButton = createButton(grade, "ui/Colored/buttonOrange-Large.png", (MainGame.res[0] / 2) - 278, MainGame.res[1] - (100 + 70 * i), 557, 60);
+                Button gradeButton = createButton(grade, "ui/Colored/buttonOrange-Large.png", (MainGame.res[0] / 2) - 278, MainGame.res[1] - (200 + 70 * i), 557, 60);
                 gradeButton.addListener(new InputListener() {
                     public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                         // Aquí puedes agregar la acción que deseas realizar al tocar el botón

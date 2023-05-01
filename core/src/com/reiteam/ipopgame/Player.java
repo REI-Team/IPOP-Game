@@ -64,7 +64,7 @@ public class Player {
     public void render(Batch batch){
         stateTime += Gdx.graphics.getDeltaTime();
         TextureRegion playerFrame = getPlayerFrame();
-        batch.draw(playerFrame, MainGame.res[0]/2,MainGame.res[0]/2,0, 0,playerFrame.getRegionWidth(),playerFrame.getRegionHeight(),0.11f,0.12f,0);
+        batch.draw(playerFrame, MainGame.res[0]/2,MainGame.res[1]/2,0, 0,playerFrame.getRegionWidth(),playerFrame.getRegionHeight(),0.11f,0.12f,0);
     }
     public void disposeTextures(){
         img.dispose();
