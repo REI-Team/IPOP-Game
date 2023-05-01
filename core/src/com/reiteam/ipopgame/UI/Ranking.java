@@ -36,7 +36,6 @@ public class Ranking extends UIScreen{
     public Ranking(){
         setupFontStyle();
         stage = new Stage(MainGame.viewport);
-        Gdx.input.setInputProcessor(stage);
         //Setting a background image
         Texture backgroundImage = new Texture(Gdx.files.internal("ui/background.png"));
         Image background = new Image(backgroundImage);

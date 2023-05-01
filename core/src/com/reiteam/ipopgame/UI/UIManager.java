@@ -15,6 +15,7 @@ public class UIManager {
         screens = new HashMap<String,UIScreen>();
         screens.put("mainScreen",new MainMenu());
         screens.put("Ranking",new Ranking());
+        screens.put("ChooseGrade",new ChooseGrade());
         showScreen("mainScreen");
     }
 

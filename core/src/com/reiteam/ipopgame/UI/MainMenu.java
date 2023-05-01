@@ -1,6 +1,7 @@
 package com.reiteam.ipopgame.UI;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -22,11 +23,12 @@ public class MainMenu extends UIScreen{
     private Stage stage;
     private Button play,multiplayer,chooseName,chooseGrade,chooseCharacter,ranking;
     private Label.LabelStyle labelStyle;
+    private Music musicaFondo;
 
     public MainMenu(){
         setupFontStyle();
+        playMusic();
         stage = new Stage(MainGame.viewport);
-        Gdx.input.setInputProcessor(stage);
         //Setting a background image
         Texture backgroundImage = new Texture(Gdx.files.internal("ui/background.png"));
         Image background = new Image(backgroundImage);
@@ -42,6 +44,7 @@ public class MainMenu extends UIScreen{
         play.addListener(new InputListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 if(!play.isDisabled()){
+                    musicaFondo.stop();
                     UIManager.showScreen("");
                     return true;
                 }
@@ -53,6 +56,15 @@ public class MainMenu extends UIScreen{
         multiplayer = createButton("Multijugador","ui/Colored/buttonBlue.png",(MainGame.res[0]/2)-125,MainGame.res[1]-370,250,60);
         chooseName = createButton("Triar nom","ui/Colored/buttonBlue.png",(MainGame.res[0]/2)-125,MainGame.res[1]-440,250,60);
         chooseGrade = createButton("Triar cicle","ui/Colored/buttonBlue.png",(MainGame.res[0]/2)-125,MainGame.res[1]-510,250,60);
+        chooseGrade.addListener(new InputListener() {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                if(!chooseGrade.isDisabled()){
+                    UIManager.showScreen("ChooseGrade");
+                    return true;
+                }
+                return true;
+            }
+        });
         chooseCharacter = createButton("Triar personatge","ui/Colored/buttonBlue.png",(MainGame.res[0]/2)-125,MainGame.res[1]-580,250,60);
 
         ranking=createButton("Rànking","ui/Colored/buttonBlue.png",(MainGame.res[0]/2)-125,MainGame.res[1]-650,250,60);
@@ -117,6 +129,11 @@ public class MainMenu extends UIScreen{
                 disableButton(play,isDisabled);
         }
 
+    }
+    private void playMusic(){
+        musicaFondo = Gdx.audio.newMusic(Gdx.files.internal("music/menu_background.mp3"));
+        musicaFondo.setLooping(true);
+        musicaFondo.play();
     }
 
     @Override
