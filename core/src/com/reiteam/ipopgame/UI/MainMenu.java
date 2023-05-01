@@ -28,7 +28,7 @@ public class MainMenu extends UIScreen{
     public MainMenu(){
         setupFontStyle();
         // Setting up music and sound effects
-        playMusic();
+        //playMusic();
         button_click = Gdx.audio.newMusic(Gdx.files.internal("music/button_click.mp3"));
         stage = new Stage(MainGame.viewport);
         //Setting a background image
@@ -47,17 +47,19 @@ public class MainMenu extends UIScreen{
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 if(!play.isDisabled()){
                     button_click.play();
-                    backgroundMusic.stop();
+                    //backgroundMusic.stop();
                     UIManager.showScreen("");
                     return true;
                 }
                 return true;
             }
         });
-        disableButton(play,true);
+        disableButton(play,false);
         // Adding buttons without a actionListener to the stage
         multiplayer = createButton("Multijugador","ui/Colored/buttonBlue.png",(MainGame.res[0]/2)-125,MainGame.res[1]-370,250,60);
+        disableButton(multiplayer,true);
         chooseName = createButton("Triar nom","ui/Colored/buttonBlue.png",(MainGame.res[0]/2)-125,MainGame.res[1]-440,250,60);
+        disableButton(chooseName,true);
         chooseGrade = createButton("Triar cicle","ui/Colored/buttonBlue.png",(MainGame.res[0]/2)-125,MainGame.res[1]-510,250,60);
         chooseGrade.addListener(new InputListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -70,7 +72,7 @@ public class MainMenu extends UIScreen{
             }
         });
         chooseCharacter = createButton("Triar personatge","ui/Colored/buttonBlue.png",(MainGame.res[0]/2)-125,MainGame.res[1]-580,250,60);
-
+        disableButton(chooseCharacter,true);
         ranking=createButton("Rànking","ui/Colored/buttonBlue.png",(MainGame.res[0]/2)-125,MainGame.res[1]-650,250,60);
         ranking.addListener(new InputListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {

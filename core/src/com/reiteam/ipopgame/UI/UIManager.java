@@ -31,6 +31,8 @@ public class UIManager {
         activeScreen=screenName;
         if(!screenName.equals("")){
             Gdx.input.setInputProcessor(screens.get(screenName).getStage());
+        }else{
+            Gdx.input.setInputProcessor(null);
         }
     }
 }

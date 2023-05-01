@@ -105,8 +105,9 @@ public class ChooseGrade extends UIScreen {
         button.setPosition(x, y); // Setting button pos
         button.setSize(width, height); // Setting button size
         Label label = new Label(text, skin); // Making a label instance
-        label.setPosition(button.getX() + button.getWidth()/2, button.getY() + button.getHeight()/2); // Center label
-        label.setAlignment(Align.center);
+        label.setPosition(0 , 500 ); // Center label
+        label.setAlignment(Align.left);
+        label.setWidth(button.getWidth());
         button.add(label);
         stage.addActor(button);
         return button;
@@ -124,7 +125,7 @@ public class ChooseGrade extends UIScreen {
             for (int i = 0; i < 5; i++) {
                 if(5*(page-1)+i<grades_family.length) {
                     String family = grades_family[5*(page-1)+i];
-                    Button familyButton = createButton(family, "ui/Colored/buttonBlue.png", (MainGame.res[0] / 2) - 125, MainGame.res[1] - (100 + 70 * i), 250, 60);
+                    Button familyButton = createButton(family, "ui/Colored/buttonOrange-Medium.png", (MainGame.res[0] / 2) - 225, MainGame.res[1] - (100 + 70 * i), 450, 60);
                     familyButton.addListener(new InputListener() {
                         public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                             // Aquí puedes agregar la acción que deseas realizar al tocar el botón
@@ -161,7 +162,7 @@ public class ChooseGrade extends UIScreen {
             });
             for (int i = 0; i < grades.get(family).length; i++) {
                 String grade = grades.get(family)[i];
-                Button gradeButton = createButton(grade, "ui/Colored/buttonBlue.png", (MainGame.res[0] / 2) - 125, MainGame.res[1] - (100 + 70 * i), 250, 60);
+                Button gradeButton = createButton(grade, "ui/Colored/buttonOrange-Large.png", (MainGame.res[0] / 2) - 278, MainGame.res[1] - (100 + 70 * i), 557, 60);
                 gradeButton.addListener(new InputListener() {
                     public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                         // Aquí puedes agregar la acción que deseas realizar al tocar el botón
@@ -181,7 +182,7 @@ public class ChooseGrade extends UIScreen {
     }
     private void loadAllGrades(){
         grades = new HashMap<String, String[]>();
-        grades.put("Informàtica", new String[]{"Sistemes microinformàtics i xarxes","Administració de sistemes informàtics en xarxa - orientat a Ciberseguretat","Desenvolupament d’aplicacions multiplataforma","Desenvolupament d’aplicacions web"});
+        grades.put("Informàtica", new String[]{"Sistemes microinformàtics i xarxes","Administració de sistemes informàtics en xarxa","Desenvolupament d’aplicacions multiplataforma","Desenvolupament d’aplicacions web"});
         grades.put("Administratiu",new String[]{"Gestió administrativa","Administració i finances","Assistència a la direcció"});
         grades.put("Automoció",new String[]{"Electromecànica de vehicles automòbils","Automoció"});
         grades.put("Manteniment i serveis a la producció",new String[]{"Manteniment electromecànics","Mecatrònica industrial"});
