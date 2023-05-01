@@ -44,10 +44,11 @@ public class Ranking extends UIScreen{
         Image background = new Image(backgroundImage);
         background.setSize(MainGame.res[0], MainGame.res[1]);
         stage.addActor(background);
-        //Setting logo
-        Texture logotext = new Texture(Gdx.files.internal("ui/rank.png")); // TODO cambiar
+        //Setting Menu UI
+        Texture logotext = new Texture(Gdx.files.internal("ui/uiMenu_Ranking.png"));
         Image logo = new Image(logotext);
-        logo.setPosition((MainGame.res[0]/2)-165,MainGame.res[1]-100);
+        logo.setSize(650,500);
+        logo.setPosition(320,200);
         stage.addActor(logo);
         // Adding buttons
         uiBack = createButton("","ui/Colored/back_red.png",10,MainGame.res[1]-90,66,66);
@@ -176,7 +177,7 @@ public class Ranking extends UIScreen{
                         for (int i = 0; (i < data.size()) && (i<10); i++) {
                             Map<String,Object> player = data.get(i);
                             //System.out.println(data.get(i));
-                            Actor a=createLabel(player.get("name")+" : "+ player.get("score"),(MainGame.res[0]/2)-165,MainGame.res[1]-(130+(i*30)));
+                            Actor a=createLabel(player.get("name")+" : "+ player.get("score"),(MainGame.res[0]/2)-75,MainGame.res[1]-(180+(i*30)));
                             //stage.addActor(createLabel(data.getJSONObject(i).getString("name")+" : "+ data.getJSONObject(i).getInt("score"),(MainGame.res[0]/2)-165,MainGame.res[1]-(130+(i*30))));
                             stage.addActor(a);
                             actors.add(a);

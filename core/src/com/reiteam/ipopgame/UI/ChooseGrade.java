@@ -40,6 +40,12 @@ public class ChooseGrade extends UIScreen {
         Image background = new Image(backgroundImage);
         background.setSize(MainGame.res[0], MainGame.res[1]);
         stage.addActor(background);
+        // Menu
+        Texture logotext = new Texture(Gdx.files.internal("ui/uiMenu_Grades.png"));
+        Image logo = new Image(logotext);
+        logo.setSize(650,500);
+        logo.setPosition(320,200);
+        stage.addActor(logo);
         uiBack = createButton("","ui/Colored/back_red.png",10,MainGame.res[1]-90,66,66);
         uiBack.addListener(new InputListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -53,7 +59,7 @@ public class ChooseGrade extends UIScreen {
             }
         });
         // Pagination buttons
-        back = createButton("","ui/Colored/pag_back.png",(MainGame.res[0]/2)-100,MainGame.res[1]-650,32,42);
+        back = createButton("","ui/Colored/pag_back.png",(MainGame.res[0]/2)-60,MainGame.res[1]-600,32,42);
         back.addListener(new InputListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 // Aquí puedes agregar la acción que deseas realizar al tocar el botón
@@ -69,7 +75,7 @@ public class ChooseGrade extends UIScreen {
         });
         back.setDisabled(true);
         stage.addActor(back);
-        next = createButton("","ui/Colored/pag_next.png",(MainGame.res[0]/2)-0,MainGame.res[1]-650,32,42);
+        next = createButton("","ui/Colored/pag_next.png",(MainGame.res[0]/2)+40,MainGame.res[1]-600,32,42);
         next.addListener(new InputListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 // Aquí puedes agregar la acción que deseas realizar al tocar el botón
