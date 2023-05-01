@@ -23,7 +23,6 @@ public class MainGame extends ApplicationAdapter {
 	private OrthographicCamera camera;
 	public static Viewport viewport;
 	public static final int[] res = {1280,720};
-	private Animation<TextureRegion> running;
 	private float stateTime = 0;
 	public static String grade = "";
 	final int IDLE=0, UP=1, DOWN=2, LEFT=3, RIGHT=4;
@@ -33,19 +32,14 @@ public class MainGame extends ApplicationAdapter {
 	public void create () {
 		Gdx.app.setLogLevel(Application.LOG_DEBUG);
 		Texture txt =new Texture("character.png");
-		player = new Player(txt,200,100);
-		camera = new OrthographicCamera(res[0], res[1]);
-		camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
-		camera.update();
+		player = new Player(txt,-500,-500);
+		camera = new OrthographicCamera();
+		camera.translate(100, 0, 0);
 		viewport = new FitViewport(res[0], res[1], camera); // Creating a viewport for the ui manager
 		uimanager = new UIManager();
 		batch = new SpriteBatch();
 		img = new Texture("gamebg.png");
 		//Player TEST, Make a player class
-		Texture player = new Texture("character.png");;
-		TextureRegion runningFrame[] = new TextureRegion[1];
-		runningFrame[0] = new TextureRegion(player,458,0,463,557);
-		running = new Animation<TextureRegion>(0.08f,runningFrame);
 		// facilities per calcular el "touch"
 		int screenWidth = Gdx.graphics.getWidth();
 		int screenHeight = Gdx.graphics.getHeight();
@@ -53,6 +47,7 @@ public class MainGame extends ApplicationAdapter {
 		down = new Rectangle(0, 0, screenWidth, screenHeight/3);
 		left = new Rectangle(0, 0, screenWidth/3, screenHeight);
 		right = new Rectangle(screenWidth*2/3, 0, screenWidth/3, screenHeight);
+		resize(0,0);
 	}
 
 	@Override
@@ -67,7 +62,7 @@ public class MainGame extends ApplicationAdapter {
 		//System.out.println(UIManager.activeScreen);
 		if(UIManager.activeScreen==""){
 			stateTime += Gdx.graphics.getDeltaTime();
-			batch.draw(img, 0, 0);
+			batch.draw(img, player.getX(), player.getY(),img.getWidth()*2,img.getHeight()*2);
 			player.render(batch);
 			//TextureRegion playerFrame = running.getKeyFrame(stateTime,true);
 			//batch.draw(playerFrame, 500,400,0, 0,playerFrame.getRegionWidth(),playerFrame.getRegionHeight(),0.09f,0.1f,0);
@@ -80,20 +75,20 @@ public class MainGame extends ApplicationAdapter {
 				player.setPlayerMode(0);
 				break;
 			case 1:
-				player.setY(player.getY()-2);
+				player.setY(player.getY()+2);
 				player.setPlayerMode(4);
 				break;
 			case 2:
-				player.setY(player.getY()+2);
+				player.setY(player.getY()-2);
 				player.setPlayerMode(3);
 				break;
 			case 3:
-				player.setX(player.getX()-2);
+				player.setX(player.getX()+2);
 				player.setPlayerMode(2);
 				player.setRotation(-2);
 				break;
 			case 4:
-				player.setX(player.getX()+2);
+				player.setX(player.getX()-2);
 				player.setPlayerMode(1);
 				player.setRotation(2);
 				break;

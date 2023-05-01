@@ -2,6 +2,7 @@ package com.reiteam.ipopgame.UI;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,5 +35,8 @@ public class UIManager {
         }else{
             Gdx.input.setInputProcessor(null);
         }
+    }
+    public Stage getCurrentStage(){
+        return screens.get(activeScreen).getStage();
     }
 }
