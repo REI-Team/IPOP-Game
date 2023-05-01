@@ -21,13 +21,15 @@ import com.reiteam.ipopgame.MainGame;
 
 public class MainMenu extends UIScreen{
     private Stage stage;
-    private Button play,multiplayer,chooseName,chooseGrade,chooseCharacter,ranking;
+    private static Button play,multiplayer,chooseName,chooseGrade,chooseCharacter,ranking;
     private Label.LabelStyle labelStyle;
-    private Music musicaFondo;
+    private Music backgroundMusic, button_click;
 
     public MainMenu(){
         setupFontStyle();
+        // Setting up music and sound effects
         playMusic();
+        button_click = Gdx.audio.newMusic(Gdx.files.internal("music/button_click.mp3"));
         stage = new Stage(MainGame.viewport);
         //Setting a background image
         Texture backgroundImage = new Texture(Gdx.files.internal("ui/background.png"));
@@ -44,7 +46,8 @@ public class MainMenu extends UIScreen{
         play.addListener(new InputListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 if(!play.isDisabled()){
-                    musicaFondo.stop();
+                    button_click.play();
+                    backgroundMusic.stop();
                     UIManager.showScreen("");
                     return true;
                 }
@@ -59,6 +62,7 @@ public class MainMenu extends UIScreen{
         chooseGrade.addListener(new InputListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 if(!chooseGrade.isDisabled()){
+                    button_click.play();
                     UIManager.showScreen("ChooseGrade");
                     return true;
                 }
@@ -70,6 +74,7 @@ public class MainMenu extends UIScreen{
         ranking=createButton("Rànking","ui/Colored/buttonBlue.png",(MainGame.res[0]/2)-125,MainGame.res[1]-650,250,60);
         ranking.addListener(new InputListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                button_click.play();
                 UIManager.showScreen("Ranking");
                 return true;
             }
@@ -102,7 +107,7 @@ public class MainMenu extends UIScreen{
         stage.addActor(button);
         return button;
     }
-    public void disableButton(Button button, Boolean isDisabled){
+    public static void disableButton(Button button, Boolean isDisabled){
         if(isDisabled){
             TextureRegion nuevaTextura = new TextureRegion(new Texture("ui/Colored/buttonDisabled.png"));
             Button.ButtonStyle nuevoEstilo = new Button.ButtonStyle();
@@ -121,7 +126,7 @@ public class MainMenu extends UIScreen{
             button.setDisabled(false);
         }
     }
-    public void disableButton(String buttonName,Boolean isDisabled){
+    public static void disableButton(String buttonName,Boolean isDisabled){
         switch (buttonName){
             case "play":
                 disableButton(play,isDisabled);
@@ -131,9 +136,9 @@ public class MainMenu extends UIScreen{
 
     }
     private void playMusic(){
-        musicaFondo = Gdx.audio.newMusic(Gdx.files.internal("music/menu_background.mp3"));
-        musicaFondo.setLooping(true);
-        musicaFondo.play();
+        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("music/menu_background.mp3"));
+        backgroundMusic.setLooping(true);
+        backgroundMusic.play();
     }
 
     @Override

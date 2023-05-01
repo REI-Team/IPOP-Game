@@ -22,7 +22,7 @@ public class MainGame extends ApplicationAdapter {
 	public static final int[] res = {1280,720};
 	private Animation<TextureRegion> running;
 	private float stateTime = 0;
-
+	public static String grade = "";
 	
 	@Override
 	public void create () {

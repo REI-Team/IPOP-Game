@@ -1,6 +1,7 @@
 package com.reiteam.ipopgame.UI;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -30,11 +31,13 @@ public class Ranking extends UIScreen{
     private Label.LabelStyle labelStyle;
     public int fetched;
     public int actualPage=1;
-    private Button next,back;
+    private Button next,back,uiBack;
     private ArrayList<Actor> actors=new ArrayList<>();
+    private Music button_click;
 
     public Ranking(){
         setupFontStyle();
+        button_click = Gdx.audio.newMusic(Gdx.files.internal("music/button_click.mp3"));
         stage = new Stage(MainGame.viewport);
         //Setting a background image
         Texture backgroundImage = new Texture(Gdx.files.internal("ui/background.png"));
@@ -47,12 +50,26 @@ public class Ranking extends UIScreen{
         logo.setPosition((MainGame.res[0]/2)-165,MainGame.res[1]-100);
         stage.addActor(logo);
         // Adding buttons
-        back = createButton("<<","ui/Colored/buttonGrey.png",(MainGame.res[0]/2)-100,MainGame.res[1]-650,50,60);
+        uiBack = createButton("","ui/Colored/back_red.png",10,MainGame.res[1]-90,66,66);
+        uiBack.addListener(new InputListener() {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                // Aquí puedes agregar la acción que deseas realizar al tocar el botón
+                //UIManager.activeScreen="";
+                if(uiBack.isDisabled()==false){
+                    button_click.play();
+                    UIManager.showScreen("mainScreen");
+                }
+                return true;
+            }
+        });
+        stage.addActor(uiBack);
+        back = createButton("","ui/Colored/pag_back.png",(MainGame.res[0]/2)-100,MainGame.res[1]-650,32,42);
         back.addListener(new InputListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 // Aquí puedes agregar la acción que deseas realizar al tocar el botón
                 //UIManager.activeScreen="";
                 if(back.isDisabled()==false){
+                    button_click.play();
                     actualPage--;
                     fetchRows();
                     if(actualPage==1){
@@ -64,12 +81,13 @@ public class Ranking extends UIScreen{
         });
         back.setDisabled(true);
         stage.addActor(back);
-        next = createButton(">>","ui/Colored/buttonGrey.png",(MainGame.res[0]/2)-0,MainGame.res[1]-650,50,60);
+        next = createButton("","ui/Colored/pag_next.png",(MainGame.res[0]/2)+20,MainGame.res[1]-650,32,42);
         next.addListener(new InputListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 // Aquí puedes agregar la acción que deseas realizar al tocar el botón
                 //UIManager.activeScreen="";
                 if(next.isDisabled()==false){
+                    button_click.play();
                     actualPage++;
                     fetchRows();
                     back.setDisabled(false);
@@ -80,9 +98,9 @@ public class Ranking extends UIScreen{
         next.setDisabled(true);
 
         stage.addActor(next);
-        Button page = createButton("","ui/Colored/buttonGrey.png",(MainGame.res[0]/2)-50,MainGame.res[1]-650,50,60);
+        //Button page = createButton("","ui/Colored/buttonGrey.png",(MainGame.res[0]/2)-50,MainGame.res[1]-650,50,60);
         // Adding buttons without a actionListener to the stage
-        stage.addActor(page);
+        //stage.addActor(page);
         Actor lab=(createLabel(String.valueOf(actualPage),(MainGame.res[0]/2)-30,MainGame.res[1]-635));
         actors.add(lab);
         stage.addActor(lab);
