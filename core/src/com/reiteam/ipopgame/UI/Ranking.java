@@ -169,19 +169,16 @@ public class Ranking extends UIScreen{
                         Gdx.app.debug("Etiqueta", reciv.get("result").getClass().toString());
                         ArrayList<Map<String,Object>> data = (ArrayList<Map<String, Object>>) reciv.get("result");
                         fetched=data.size();
-                        if(fetched==11){
+                        if(fetched>=11){
                             next.setDisabled(false);
                         }else{
                             next.setDisabled(true);
                         }
                         for (int i = 0; (i < data.size()) && (i<10); i++) {
                             Map<String,Object> player = data.get(i);
-                            //System.out.println(data.get(i));
                             Actor a=createLabel(player.get("name")+" : "+ player.get("score"),(MainGame.res[0]/2)-75,MainGame.res[1]-(180+(i*30)));
-                            //stage.addActor(createLabel(data.getJSONObject(i).getString("name")+" : "+ data.getJSONObject(i).getInt("score"),(MainGame.res[0]/2)-165,MainGame.res[1]-(130+(i*30))));
                             stage.addActor(a);
                             actors.add(a);
-                            //a.remove();
                         }
 
                     }
