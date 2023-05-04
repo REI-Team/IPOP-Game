@@ -1,14 +1,18 @@
 package com.reiteam.ipopgame.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.reiteam.ipopgame.MainGame;
 import com.reiteam.ipopgame.game.Components.Image;
+import com.reiteam.ipopgame.game.Components.MarqueeLabel;
 import com.reiteam.ipopgame.game.Components.Player;
 import com.reiteam.ipopgame.game.Components.Totem;
 
@@ -32,9 +36,12 @@ public class GameScreen {
         right = new Rectangle(screenWidth*2/3, 0, screenWidth/3, screenHeight);
         mainStage.addActor(player);
         BitmapFont font = new BitmapFont();
-        totem = new Totem(font, "Este es un ejemplo de texto en marquesina", 100);
-        totem.setBounds(200, Gdx.graphics.getHeight() / 2, 100, font.getLineHeight());
-        mainStage.addActor(totem);
+        Label.LabelStyle labelStyle = new Label.LabelStyle();
+        labelStyle.font = font;
+        labelStyle.fontColor = Color.WHITE;
+        MarqueeLabel marqueeLabel = new MarqueeLabel("Este es el texto de la marquesina", labelStyle);
+        marqueeLabel.setPosition(200, 200);
+        mainStage.addActor(marqueeLabel);
     }
 
     public void update(){
