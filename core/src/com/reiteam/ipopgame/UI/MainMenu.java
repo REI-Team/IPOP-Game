@@ -54,7 +54,7 @@ public class MainMenu extends UIScreen{
                 return true;
             }
         });
-        disableButton(play,true);
+        disableButton(play,false);
         // Adding buttons without a actionListener to the stage
         multiplayer = createButton("Multijugador","ui/Colored/buttonBlue.png",(MainGame.res[0]/2)-125,MainGame.res[1]-370,250,60);
         disableButton(multiplayer,true);

@@ -1,21 +1,23 @@
-package com.reiteam.ipopgame;
+package com.reiteam.ipopgame.game.Components;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.reiteam.ipopgame.MainGame;
 
-public class Player {
+public class Player extends Actor {
     private Texture img;
     private Animation<TextureRegion> runningRight,runningLeft,runningUp,runningDown;
     private Animation<TextureRegion> idle;
-    private int x,y;
+    private float x,y;
     private float stateTime;
     private int playerMode = 0;
-    private int rotation = 2;
+    private float rotation = 2;
 
-    public Player(Texture sprite, int x,int y){
+    public Player(Texture sprite, float x,float y){
         this.img = sprite;
         // Running animation
         TextureRegion runningFrameRight[] = new TextureRegion[4];
@@ -61,27 +63,22 @@ public class Player {
         }
         return idle.getKeyFrame(stateTime,true);
     }
-    public void render(Batch batch){
-        stateTime += Gdx.graphics.getDeltaTime();
-        TextureRegion playerFrame = getPlayerFrame();
-        batch.draw(playerFrame, MainGame.res[0]/2,MainGame.res[1]/2,0, 0,playerFrame.getRegionWidth(),playerFrame.getRegionHeight(),0.11f,0.12f,0);
-    }
     public void disposeTextures(){
         img.dispose();
     }
-    public int getX() {
+    public float getX() {
         return x;
     }
-
-    public void setX(int x) {
+    @Override
+    public void setX(float x) {
         this.x = x;
     }
 
-    public int getY() {
+    public float getY() {
         return y;
     }
-
-    public void setY(int y) {
+    @Override
+    public void setY(float y) {
         this.y = y;
     }
 
@@ -93,11 +90,18 @@ public class Player {
         this.playerMode = playerMode;
     }
 
-    public int getRotation() {
+    public float getRotation() {
         return rotation;
     }
 
     public void setRotation(int rotation) {
         this.rotation = rotation;
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        stateTime += Gdx.graphics.getDeltaTime();
+        TextureRegion playerFrame = getPlayerFrame();
+        batch.draw(playerFrame, MainGame.res[0]/2,MainGame.res[1]/2,0, 0,playerFrame.getRegionWidth(),playerFrame.getRegionHeight(),0.11f,0.12f,0);
     }
 }
