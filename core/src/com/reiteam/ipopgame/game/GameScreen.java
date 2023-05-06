@@ -34,7 +34,7 @@ public class GameScreen {
         down = new Rectangle(0, 0, screenWidth, screenHeight/3);
         left = new Rectangle(0, 0, screenWidth/3, screenHeight);
         right = new Rectangle(screenWidth*2/3, 0, screenWidth/3, screenHeight);
-        t1 = new Totem(500,500);
+        t1 = new Totem(700,500);
         mainStage.addActor(t1);
         mainStage.addActor(player);
     }
