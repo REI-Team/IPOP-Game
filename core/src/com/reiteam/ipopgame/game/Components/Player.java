@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.reiteam.ipopgame.MainGame;
 
@@ -14,10 +15,12 @@ public class Player extends Actor {
     private Animation<TextureRegion> idle;
     private float x,y;
     private float stateTime;
+    private Rectangle collider;
     private int playerMode = 0;
     private float rotation = 2;
 
     public Player(Texture sprite, float x,float y){
+        collider = new Rectangle(x, y, 50, 60);
         this.img = sprite;
         // Running animation
         TextureRegion runningFrameRight[] = new TextureRegion[4];
@@ -63,6 +66,11 @@ public class Player extends Actor {
         }
         return idle.getKeyFrame(stateTime,true);
     }
+
+    public Rectangle getCollider() {
+        return collider;
+    }
+
     public void disposeTextures(){
         img.dispose();
     }
@@ -100,8 +108,14 @@ public class Player extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        update();
         stateTime += Gdx.graphics.getDeltaTime();
         TextureRegion playerFrame = getPlayerFrame();
         batch.draw(playerFrame, MainGame.res[0]/2,MainGame.res[1]/2,0, 0,playerFrame.getRegionWidth(),playerFrame.getRegionHeight(),0.11f,0.12f,0);
+    }
+    public void update(){
+        collider.x=x;
+        collider.y=y;
+        Gdx.app.log("Etiqueta", String.valueOf(collider.x));
     }
 }

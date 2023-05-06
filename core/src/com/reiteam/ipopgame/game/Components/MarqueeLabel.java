@@ -1,52 +1,58 @@
 package com.reiteam.ipopgame.game.Components;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
-
 
 public class MarqueeLabel extends Label {
 
-    // Constructor
-    public MarqueeLabel(CharSequence text, LabelStyle style) {
+    private float scrollSpeed;
+    private float elapsedTime;
+    private float textWidth;
+    private float wrapWidth;
+
+    public MarqueeLabel(CharSequence text, LabelStyle style, float wrapWidth, float scrollSpeed) {
         super(text, style);
+        this.scrollSpeed = scrollSpeed;
+        this.wrapWidth = wrapWidth;
+        this.textWidth = getGlyphLayout().width;
     }
+
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        // Define los límites de la marquesina
-        float marqueeWidth = 200; // El ancho que desees para la marquesina
-        float marqueeHeight = 50; // El alto que desees para la marquesina
+        Drawable background = getStyle().background;
 
-        // Limita el área de dibujo
         batch.flush();
+        float originalX = getX();
+        float originalY = getY();
+
+        // Crea un área de recorte para mostrar solo el texto dentro del área de la etiqueta
         Rectangle scissors = new Rectangle();
-        Rectangle clipBounds = new Rectangle(getX(), getY(), marqueeWidth, marqueeHeight);
-        ScissorStack.calculateScissors(getStage().getCamera(), getStage().getViewport().getScreenX(), getStage().getViewport().getScreenY(),
-                getStage().getViewport().getScreenWidth(), getStage().getViewport().getScreenHeight(), getStage().getBatch().getTransformMatrix(), clipBounds, scissors);
+        Rectangle clipBounds = new Rectangle(getX(), getY(), wrapWidth, getHeight());
+        ScissorStack.calculateScissors(getStage().getCamera(), batch.getTransformMatrix(), clipBounds, scissors);
         ScissorStack.pushScissors(scissors);
 
-        // Llama al método draw() de la clase base (Label) para dibujar el texto
+        // Mueve el texto de acuerdo al tiempo transcurrido
+        elapsedTime += scrollSpeed;
+        if (elapsedTime > textWidth) {
+            elapsedTime = 0;
+        }
+
+        setPosition(originalX - elapsedTime, originalY);
         super.draw(batch, parentAlpha);
 
-        // Restaura el área de dibujo
+        // Dibuja el texto nuevamente al final si es necesario
+        if (elapsedTime > 0 && elapsedTime < wrapWidth) {
+            setPosition(originalX + textWidth - elapsedTime, originalY);
+            super.draw(batch, parentAlpha);
+        }
+
+        // Restaura la posición original y el fondo
+        setPosition(originalX, originalY);
+
         batch.flush();
         ScissorStack.popScissors();
-    }
-
-    @Override
-    public void act(float delta) {
-        super.act(delta);
-
-        // Actualiza la posición del texto
-        moveBy(-1, 0); // Ajusta la velocidad de desplazamiento modificando el valor de -1
-
-        // Si el texto ha desaparecido por completo de la marquesina, reinicia su posición
-        if (getX() + getWidth() < 0) {
-            setPosition(getParent().getWidth(), getY());
-        }
     }
 }
