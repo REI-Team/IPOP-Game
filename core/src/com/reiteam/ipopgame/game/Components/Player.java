@@ -20,7 +20,7 @@ public class Player extends Actor {
     private float rotation = 2;
 
     public Player(Texture sprite, float x,float y){
-        collider = new Rectangle(x, y, 50, 60);
+        collider = new Rectangle(x, y, 30, 60);
         this.img = sprite;
         // Running animation
         TextureRegion runningFrameRight[] = new TextureRegion[4];
@@ -116,6 +116,6 @@ public class Player extends Actor {
     public void update(){
         collider.x=x;
         collider.y=y;
-        Gdx.app.log("Etiqueta", String.valueOf(collider.x));
+        //Gdx.app.log("Etiqueta", String.valueOf(collider.x));
     }
 }

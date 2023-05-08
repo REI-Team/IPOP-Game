@@ -48,7 +48,8 @@ public class MainMenu extends UIScreen{
                 if(!play.isDisabled()){
                     button_click.play();
                     backgroundMusic.stop();
-                    UIManager.showScreen("");
+                    MainGame.gameStarted=true;
+                    UIManager.showScreen("gameScreen");
                     return true;
                 }
                 return true;

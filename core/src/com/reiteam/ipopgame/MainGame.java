@@ -23,10 +23,13 @@ public class MainGame extends ApplicationAdapter {
 	public static final int[] res = {1280,720};
 	private float stateTime = 0;
 	public static String grade = "";
-
-	private GameScreen gameScreen;
+	public static int success, error;
+	public static float time;
+	public static boolean gameStarted=false;
+	public static GameScreen gameScreen;
 	@Override
 	public void create () {
+		success=4;
 		Gdx.app.setLogLevel(Application.LOG_DEBUG);
 		camera = new OrthographicCamera();
 		camera.translate(100, 0, 0);
@@ -44,19 +47,27 @@ public class MainGame extends ApplicationAdapter {
 
 	@Override
 	public void render () {
+		if(gameStarted){
+			time+=Gdx.graphics.getDeltaTime();
+		}
 		camera.update();
 		gameScreen.update();
 		batch.setProjectionMatrix(camera.combined);
 		ScreenUtils.clear(0, 0, 0, 1);
 		batch.begin();
 		uimanager.render(); //Rendering UI
-		// TODO improove this, only for testing
+		// TODO improove this, only for testing... or not
 		//System.out.println(UIManager.activeScreen);
 		if(UIManager.activeScreen==""){
 			stateTime += Gdx.graphics.getDeltaTime();
 			gameScreen.draw();
 			//TextureRegion playerFrame = running.getKeyFrame(stateTime,true);
 			//batch.draw(playerFrame, 500,400,0, 0,playerFrame.getRegionWidth(),playerFrame.getRegionHeight(),0.09f,0.1f,0);
+		}
+		if(success==5 & gameStarted){
+			gameStarted=false;
+			UIManager.showScreen("finishGame");
+
 		}
 		batch.end();
 	}

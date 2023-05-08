@@ -13,7 +13,7 @@ public class MarqueeLabel extends Label {
     private float textWidth;
     private float wrapWidth;
 
-    public MarqueeLabel(CharSequence text, LabelStyle style, float wrapWidth, float scrollSpeed) {
+    public MarqueeLabel(CharSequence text, LabelStyle style, float wrapWidth, float scrollSpeed, float width) {
         super(text, style);
         this.scrollSpeed = scrollSpeed;
         this.wrapWidth = wrapWidth;

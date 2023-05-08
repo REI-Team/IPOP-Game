@@ -16,17 +16,21 @@ import com.reiteam.ipopgame.game.Components.MarqueeLabel;
 import com.reiteam.ipopgame.game.Components.Player;
 import com.reiteam.ipopgame.game.Components.Totem;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 public class GameScreen {
     private Stage mainStage;
     public static Image img;
     public static Player player;
     final int IDLE=0, UP=1, DOWN=2, LEFT=3, RIGHT=4;
     Rectangle up, down, left, right, fire;
-    private Totem t1;
+    private ArrayList<Totem> totems;
     public GameScreen(){
         mainStage=new Stage(MainGame.viewport);
         img=new Image(new Texture("gamebg.png"),0, 0,2,2);
         player = new Player(new Texture("character.png"),500,500);
+        totems = new ArrayList<Totem>();
         mainStage.addActor(img);
         int screenWidth = Gdx.graphics.getWidth();
         int screenHeight = Gdx.graphics.getHeight();
@@ -34,8 +38,6 @@ public class GameScreen {
         down = new Rectangle(0, 0, screenWidth, screenHeight/3);
         left = new Rectangle(0, 0, screenWidth/3, screenHeight);
         right = new Rectangle(screenWidth*2/3, 0, screenWidth/3, screenHeight);
-        t1 = new Totem(700,500);
-        mainStage.addActor(t1);
         mainStage.addActor(player);
     }
 
@@ -44,7 +46,9 @@ public class GameScreen {
         img.setX(img.getWidth()-player.getX());
         img.setY(img.getHeight()-player.getY());
         mainStage.act(Gdx.graphics.getDeltaTime());
-        t1.checkCollision(player.getCollider());
+        for (Totem totem: totems) {
+            totem.checkCollision(player.getCollider());
+        }
     }
 
     public void draw(){
@@ -96,5 +100,29 @@ public class GameScreen {
                 }
             }
         return IDLE;
+    }
+    public void generateTotems(){
+        totems.clear();
+        String[] availableGrades = {"Sistemes microinformàtics i xarxes","Administració de sistemes informàtics en xarxa","Desenvolupament d’aplicacions multiplataforma","Desenvolupament d’aplicacions web",
+                                    "Gestió administrativa","Administració i finances","Assistència a la direcció","Electromecànica de vehicles automòbils","Automoció",
+                                    "Manteniment electromecànics","Mecatrònica industrial","Mecanització","Programació de la producció en fabricació mecànica","Gestió de l’aigua"};
+        Random rand = new Random();
+        for (int i = 0; i <= 5; i++) {
+            Gdx.app.log("Etiqueta", String.valueOf(img.getWidth()+1));
+            int randX = rand.nextInt(1280*2);
+            int randY = rand.nextInt(720*2);
+            Totem t = new Totem(randX,randY, MainGame.grade,100);
+            totems.add(t);
+            mainStage.addActor(t);
+        }
+        for (int i = 0; i <= 5; i++) {
+            Gdx.app.log("Etiqueta", String.valueOf(img.getWidth()+1));
+            int randX = rand.nextInt(1280*2);
+            int randY = rand.nextInt(720*2);
+            int gIndex = rand.nextInt(availableGrades.length);
+            Totem t = new Totem(randX,randY,availableGrades[gIndex],100);
+            totems.add(t);
+            mainStage.addActor(t);
+        }
     }
 }
