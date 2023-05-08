@@ -102,6 +102,9 @@ public class GameScreen {
         return IDLE;
     }
     public void generateTotems(){
+        for (Totem totem:totems) {
+            totem.remove();
+        }
         totems.clear();
         String[] availableGrades = {"Sistemes microinformàtics i xarxes","Administració de sistemes informàtics en xarxa","Desenvolupament d’aplicacions multiplataforma","Desenvolupament d’aplicacions web",
                                     "Gestió administrativa","Administració i finances","Assistència a la direcció","Electromecànica de vehicles automòbils","Automoció",
