@@ -50,13 +50,13 @@ public class FinishGame extends UIScreen{
         background.setSize(MainGame.res[0], MainGame.res[1]);
         stage.addActor(background);
         //Setting Menu UI
-        Texture logotext = new Texture(Gdx.files.internal("ui/uiMenu_Ranking.png"));
+        Texture logotext = new Texture(Gdx.files.internal("ui/uiMenu_End.png"));
         Image logo = new Image(logotext);
         logo.setSize(650,500);
         logo.setPosition(320,200);
         stage.addActor(logo);
         // Adding buttons
-        returnMain = createButton("Set Record","ui/Colored/buttonBlue.png",(MainGame.res[0]/2)+50,MainGame.res[1]-600,250,60);
+        returnMain = createButton("Enviar Record","ui/Colored/buttonBlue.png",(MainGame.res[0]/2)+50,MainGame.res[1]-600,250,60);
         returnMain.addListener(new InputListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 if(!setRecord.isDisabled()){
@@ -72,7 +72,7 @@ public class FinishGame extends UIScreen{
             }
         });
         stage.addActor(returnMain);
-        setRecord = createButton("Main Menu","ui/Colored/buttonBlue.png",(MainGame.res[0]/2)-300,MainGame.res[1]-600,250,60);
+        setRecord = createButton("Menú Principal","ui/Colored/buttonBlue.png",(MainGame.res[0]/2)-300,MainGame.res[1]-600,250,60);
         setRecord.addListener(new InputListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 if(!setRecord.isDisabled()){
@@ -99,7 +99,7 @@ public class FinishGame extends UIScreen{
     public void updateStats(){
         this.success.setText("Success Totems:"+String.valueOf(MainGame.success));
         this.error.setText("Error Totems:"+String.valueOf(MainGame.error));
-        this.time.setText("Time:"+String.valueOf(MainGame.time));
+        this.time.setText("Time:"+String.valueOf((int) MainGame.time));
     }
     private void setupFontStyle(){
         BitmapFont font = new BitmapFont(); // Making a instance of BitmapFont for the font
@@ -138,11 +138,11 @@ public class FinishGame extends UIScreen{
     private void setRecord(){
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode rootNode = mapper.createObjectNode();
-        rootNode.put("name", "Prueba");
+        rootNode.put("name", MainGame.username);
         rootNode.put("degree", "2");
         rootNode.put("success",String.valueOf(MainGame.success));
         rootNode.put("errors",String.valueOf(MainGame.error));
-        rootNode.put("time",String.valueOf(MainGame.time));
+        rootNode.put("time",String.valueOf((int) MainGame.time));
         try {
             String jsonString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(rootNode);
             UtilsHTTP.sendPOST(UtilsHTTP.protocol + "://" + UtilsHTTP.host + "/API/set_record", jsonString, (response) -> {

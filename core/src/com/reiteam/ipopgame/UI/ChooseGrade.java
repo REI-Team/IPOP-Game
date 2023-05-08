@@ -188,12 +188,12 @@ public class ChooseGrade extends UIScreen {
     }
     private void loadAllGrades(){
         grades = new HashMap<String, String[]>();
-        grades.put("Informàtica", new String[]{"Sistemes microinformàtics i xarxes","Administració de sistemes informàtics en xarxa","Desenvolupament d’aplicacions multiplataforma","Desenvolupament d’aplicacions web"});
+        grades.put("Informàtica", new String[]{"Sistemes microinformàtics i xarxes","Administració de sistemes informàtics en xarxa","Desenvolupament d'aplicacions multiplataforma","Desenvolupament d'aplicacions web"});
         grades.put("Administratiu",new String[]{"Gestió administrativa","Administració i finances","Assistència a la direcció"});
         grades.put("Automoció",new String[]{"Electromecànica de vehicles automòbils","Automoció"});
         grades.put("Manteniment i serveis a la producció",new String[]{"Manteniment electromecànics","Mecatrònica industrial"});
-        grades.put("Fabricació mecànica",new String[]{"Mecanització","Programació de la producció en fabricació mecànica"});
-        grades.put("Aigües",new String[]{"Gestió de l’aigua"});
+        grades.put("Fabricació mecànica",new String[]{"Mecanització","Producció en fabricació mecànica"});
+        grades.put("Aigües",new String[]{"Gestió de l'aigua"});
     }
     @Override
     public Stage getStage() {

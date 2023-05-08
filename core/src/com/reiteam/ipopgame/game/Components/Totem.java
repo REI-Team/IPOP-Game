@@ -1,6 +1,8 @@
 package com.reiteam.ipopgame.game.Components;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -24,6 +26,7 @@ public class Totem extends Actor {
     private float textWidth;
     private float marqueeTime = 0;
     private float maxWidth;
+    private Music pop,error;
 
     public Totem(float x, float y, String text, float maxWidth) {
         this.img = new Texture("totem.png");
@@ -33,9 +36,12 @@ public class Totem extends Actor {
         this.maxWidth = maxWidth;
         collider = new Rectangle(x, y, 50, 60);
         font = new BitmapFont();
+        font.setColor(Color.WHITE);
         glyphLayout = new GlyphLayout();
         glyphLayout.setText(font, text);
         textWidth = glyphLayout.width;
+        pop = Gdx.audio.newMusic(Gdx.files.internal("music/pop.mp3"));
+        error = Gdx.audio.newMusic(Gdx.files.internal("music/error.mp3"));
     }
 
     @Override
@@ -89,16 +95,19 @@ public class Totem extends Actor {
         collider.x=x;
         collider.y=y;
     }
-    public void checkCollision(Rectangle guestCollider){
+    public boolean checkCollision(Rectangle guestCollider){
         if (guestCollider.overlaps(collider)) {
             // Los rectángulos están colisionando
             if(this.text.equals(MainGame.grade)){
+                pop.play();
                 MainGame.success+=1;
             }else{
                 MainGame.error+=1;
+                error.play();
             }
-            this.remove();
+            return true;
         }
+        return false;
     }
     public Vector2 worldToScreen(float worldX, float worldY, Player player) {
         float screenX = worldX - player.getX() + MainGame.res[0] / 2;

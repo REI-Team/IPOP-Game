@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.reiteam.ipopgame.UI.UIManager;
 import com.reiteam.ipopgame.game.Components.Player;
 import com.reiteam.ipopgame.game.GameScreen;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class MainGame extends ApplicationAdapter {
 	SpriteBatch batch;
@@ -23,13 +24,15 @@ public class MainGame extends ApplicationAdapter {
 	public static final int[] res = {1280,720};
 	private float stateTime = 0;
 	public static String grade = "";
+	public  static String username = "Player";
 	public static int success, error;
 	public static float time;
 	public static boolean gameStarted=false;
 	public static GameScreen gameScreen;
 	@Override
 	public void create () {
-		success=4;
+		success=0;
+		error=0;
 		Gdx.app.setLogLevel(Application.LOG_DEBUG);
 		camera = new OrthographicCamera();
 		camera.translate(100, 0, 0);
@@ -66,6 +69,8 @@ public class MainGame extends ApplicationAdapter {
 		}
 		if(success==5 & gameStarted){
 			gameStarted=false;
+			GameScreen.clearTotems();
+			GameScreen.toggleMusic(false);
 			UIManager.showScreen("finishGame");
 
 		}

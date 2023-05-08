@@ -13,17 +13,22 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Logger;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.reiteam.ipopgame.MainGame;
+import com.reiteam.ipopgame.game.GameScreen;
 
 public class MainMenu extends UIScreen{
     private Stage stage;
     private static Button play,multiplayer,chooseName,chooseGrade,chooseCharacter,ranking;
     private Label.LabelStyle labelStyle;
     private Music backgroundMusic, button_click;
+    Texture textfieldBackgroundTexture = new Texture(Gdx.files.internal("ui/textField.png"));
+    TextureRegionDrawable textfieldBackgroundDrawable = new TextureRegionDrawable(textfieldBackgroundTexture);
 
     public MainMenu(){
         setupFontStyle();
@@ -31,6 +36,8 @@ public class MainMenu extends UIScreen{
         playMusic();
         button_click = Gdx.audio.newMusic(Gdx.files.internal("music/button_click.mp3"));
         stage = new Stage(MainGame.viewport);
+
+
         //Setting a background image
         Texture backgroundImage = new Texture(Gdx.files.internal("ui/background.png"));
         Image background = new Image(backgroundImage);
@@ -49,19 +56,19 @@ public class MainMenu extends UIScreen{
                     button_click.play();
                     backgroundMusic.stop();
                     MainGame.gameStarted=true;
+                    GameScreen.toggleMusic(true);
                     UIManager.showScreen("gameScreen");
                     return true;
                 }
                 return true;
             }
         });
-        disableButton(play,false);
+        disableButton(play,true);
         // Adding buttons without a actionListener to the stage
         multiplayer = createButton("Multijugador","ui/Colored/buttonBlue.png",(MainGame.res[0]/2)-125,MainGame.res[1]-370,250,60);
         disableButton(multiplayer,true);
-        chooseName = createButton("Triar nom","ui/Colored/buttonBlue.png",(MainGame.res[0]/2)-125,MainGame.res[1]-440,250,60);
-        disableButton(chooseName,true);
-        chooseGrade = createButton("Triar cicle","ui/Colored/buttonBlue.png",(MainGame.res[0]/2)-125,MainGame.res[1]-510,250,60);
+
+        chooseGrade = createButton("Triar cicle","ui/Colored/buttonBlue.png",(MainGame.res[0]/2)-125,MainGame.res[1]-440,250,60);
         chooseGrade.addListener(new InputListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 if(!chooseGrade.isDisabled()){
@@ -72,9 +79,9 @@ public class MainMenu extends UIScreen{
                 return true;
             }
         });
-        chooseCharacter = createButton("Triar personatge","ui/Colored/buttonBlue.png",(MainGame.res[0]/2)-125,MainGame.res[1]-580,250,60);
+        chooseCharacter = createButton("Triar personatge","ui/Colored/buttonBlue.png",(MainGame.res[0]/2)-125,MainGame.res[1]-510,250,60);
         disableButton(chooseCharacter,true);
-        ranking=createButton("Rànking","ui/Colored/buttonBlue.png",(MainGame.res[0]/2)-125,MainGame.res[1]-650,250,60);
+        ranking=createButton("Rànking","ui/Colored/buttonBlue.png",(MainGame.res[0]/2)-125,MainGame.res[1]-580,250,60);
         ranking.addListener(new InputListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 button_click.play();
@@ -83,6 +90,38 @@ public class MainMenu extends UIScreen{
             }
         });
 
+        // Change username
+        Skin skin = new Skin();
+        TextField.TextFieldStyle textFieldStyle = new TextField.TextFieldStyle();
+
+        textFieldStyle.background = textfieldBackgroundDrawable;
+        BitmapFont defaultFont = new BitmapFont();
+        skin.add("default-font", defaultFont, BitmapFont.class);
+
+
+        // Define el estilo de la fuente (puedes cargar una fuente personalizada si lo deseas)
+        textFieldStyle.font = skin.getFont("default-font");
+
+        // Define el color del texto
+        textFieldStyle.fontColor = Color.BLACK;
+        textFieldStyle.background.setLeftWidth(textFieldStyle.background.getLeftWidth() + 10);
+
+        // Añade el estilo al skin
+        skin.add("default", textFieldStyle);
+        TextField textField = new TextField("Player", skin);
+
+        // Posiciona y ajusta el tamaño del TextField según sea necesario
+        textField.setPosition(10, 10);
+        textField.setSize(200, 50);
+        stage.addActor(textField);
+        //Button
+        chooseName = createButton("Aceptar","ui/Colored/buttonGreen.png",150,10,100,50);
+        chooseName.addListener(new InputListener() {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                MainGame.username=textField.getText();
+                return true;
+            }
+        });
     }
 
     private void setupFontStyle(){
