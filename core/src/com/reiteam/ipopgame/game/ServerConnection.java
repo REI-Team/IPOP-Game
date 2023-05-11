@@ -26,8 +26,8 @@ public class ServerConnection {
         //Creating websocket connection
         if(Gdx.app.getType()== Application.ApplicationType.Android )
             // en Android el host és accessible per 10.0.2.2
-            this.address = "10.0.2.2";
-        socket = WebSockets.newSocket(WebSockets.toWebSocketUrl(this.address, this.port));
+            this.address = "nodejs-api-production-a765.up.railway.app";
+        socket = WebSockets.newSocket(WebSockets.toSecureWebSocketUrl(this.address, this.port));
         socket.setSendGracefully(false);
         socket.addListener((WebSocketListener) new MyWSListener());
         socket.connect();
@@ -50,6 +50,19 @@ public class ServerConnection {
         @Override
         public boolean onOpen(WebSocket webSocket) {
             System.out.println("Opening...");
+            try {
+                ObjectMapper mapper = new ObjectMapper();
+                ObjectNode rootNode = mapper.createObjectNode();
+                rootNode.put("type", "setPlayer");
+                rootNode.put("username", MainGame.username);
+                rootNode.put("grade", MainGame.grade);
+                String jsonString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(rootNode);
+                socket.send(jsonString);
+                MainGame.gameLogs.add("INFO", "Player sended to server");
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
             return false;
         }
 
@@ -64,7 +77,10 @@ public class ServerConnection {
             try {
                 ObjectMapper objectMapper = new ObjectMapper();
                 Map<String, Object> reciv = objectMapper.readValue(packet, Map.class);
+                Gdx.app.log("Etiqueta", packet);
+                if(reciv.get("type").equals("connectionTest")){
 
+                }
             }catch (Exception e){
                 MainGame.gameLogs.add("ERROR", "Error reading the incomming message");
             }

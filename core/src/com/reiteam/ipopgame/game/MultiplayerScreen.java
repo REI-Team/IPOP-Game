@@ -142,7 +142,7 @@ public class MultiplayerScreen {
         }
     }
     public void startConnection(){
-        server= new ServerConnection("localhost",8888);
+        server= new ServerConnection("nodejs-api-production-a765.up.railway.app",443);
     }
     public static MultiplayerScreen getInstance(){
         return instance;
