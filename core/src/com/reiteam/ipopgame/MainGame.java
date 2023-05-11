@@ -15,6 +15,8 @@ import com.reiteam.ipopgame.UI.UIManager;
 import com.reiteam.ipopgame.game.Components.Player;
 import com.reiteam.ipopgame.game.GameScreen;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.reiteam.ipopgame.game.Logs;
+import com.reiteam.ipopgame.game.MultiplayerScreen;
 
 public class MainGame extends ApplicationAdapter {
 	SpriteBatch batch;
@@ -29,6 +31,8 @@ public class MainGame extends ApplicationAdapter {
 	public static float time;
 	public static boolean gameStarted=false;
 	public static GameScreen gameScreen;
+	public static MultiplayerScreen mpScreen;
+	public static Logs gameLogs;
 	@Override
 	public void create () {
 		success=0;
@@ -36,14 +40,12 @@ public class MainGame extends ApplicationAdapter {
 		Gdx.app.setLogLevel(Application.LOG_DEBUG);
 		camera = new OrthographicCamera();
 		camera.translate(100, 0, 0);
+		gameLogs = new Logs();
 		viewport = new FitViewport(res[0], res[1], camera); // Creating a viewport for the ui manager
 		gameScreen = new GameScreen();
+		mpScreen = new MultiplayerScreen();
 		uimanager = new UIManager();
 		batch = new SpriteBatch();
-
-		//Player TEST, Make a player class
-		// facilities per calcular el "touch"
-
 
 		resize(0,0);
 	}
@@ -54,7 +56,6 @@ public class MainGame extends ApplicationAdapter {
 			time+=Gdx.graphics.getDeltaTime();
 		}
 		camera.update();
-		gameScreen.update();
 		batch.setProjectionMatrix(camera.combined);
 		ScreenUtils.clear(0, 0, 0, 1);
 		batch.begin();
@@ -64,8 +65,13 @@ public class MainGame extends ApplicationAdapter {
 		if(UIManager.activeScreen==""){
 			stateTime += Gdx.graphics.getDeltaTime();
 			gameScreen.draw();
+			gameScreen.update();
 			//TextureRegion playerFrame = running.getKeyFrame(stateTime,true);
 			//batch.draw(playerFrame, 500,400,0, 0,playerFrame.getRegionWidth(),playerFrame.getRegionHeight(),0.09f,0.1f,0);
+		} else if (UIManager.activeScreen=="mpScreen") {
+			stateTime += Gdx.graphics.getDeltaTime();
+			mpScreen.draw();
+			mpScreen.update();
 		}
 		if(success==5 & gameStarted){
 			gameStarted=false;
@@ -74,6 +80,7 @@ public class MainGame extends ApplicationAdapter {
 			UIManager.showScreen("finishGame");
 
 		}
+		gameLogs.render(batch);
 		batch.end();
 	}
 

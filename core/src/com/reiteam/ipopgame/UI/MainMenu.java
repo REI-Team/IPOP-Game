@@ -21,6 +21,7 @@ import com.badlogic.gdx.utils.Logger;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.reiteam.ipopgame.MainGame;
 import com.reiteam.ipopgame.game.GameScreen;
+import com.reiteam.ipopgame.game.MultiplayerScreen;
 
 public class MainMenu extends UIScreen{
     private Stage stage;
@@ -66,7 +67,20 @@ public class MainMenu extends UIScreen{
         disableButton(play,true);
         // Adding buttons without a actionListener to the stage
         multiplayer = createButton("Multijugador","ui/Colored/buttonBlue.png",(MainGame.res[0]/2)-125,MainGame.res[1]-370,250,60);
-        disableButton(multiplayer,true);
+        multiplayer.addListener(new InputListener() {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                if(!chooseGrade.isDisabled()){
+                    button_click.play();
+                    backgroundMusic.stop();
+                    MultiplayerScreen.getInstance().startConnection();
+                    UIManager.showScreen("mpScreen");
+                    MultiplayerScreen.toggleMusic(true);
+                    return true;
+                }
+                return true;
+            }
+        });
+        disableButton(multiplayer,false);
 
         chooseGrade = createButton("Triar cicle","ui/Colored/buttonBlue.png",(MainGame.res[0]/2)-125,MainGame.res[1]-440,250,60);
         chooseGrade.addListener(new InputListener() {

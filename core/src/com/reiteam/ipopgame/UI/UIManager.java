@@ -26,7 +26,7 @@ public class UIManager {
     public void render(){
         // Rendering the active screen
         //System.out.println(UIManager.activeScreen);
-        if(activeScreen!="") {
+        if(activeScreen!="" & activeScreen!="mpScreen") {
             screens.get(activeScreen).getStage().act(Gdx.graphics.getDeltaTime());
             screens.get(activeScreen).getStage().draw();
         }
@@ -36,6 +36,9 @@ public class UIManager {
         if(screenName.equals("gameScreen")){
             MainGame.gameScreen.generateTotems();
             activeScreen="";
+            Gdx.input.setInputProcessor(null);
+        }else if(screenName.equals("mpScreen")){
+            activeScreen="mpScreen";
             Gdx.input.setInputProcessor(null);
         }else if(screenName.equals("finishGame")){
             activeScreen=screenName;
