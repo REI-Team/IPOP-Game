@@ -38,6 +38,19 @@ public class ServerConnection {
         }
 
     }
+    public void updateTotems(Map<String, Object> players){
+        for (Map.Entry<String, Object> playerEntry: players.entrySet()) {
+            Gdx.app.log("Etiqueta totem", "PEDRO");
+            Map<String, Object> player = (Map<String, Object>) playerEntry.getValue();
+            Gdx.app.log("Etiqueta totem", player.get("totems").getClass().toString());
+            ArrayList<Map<String, Object>> totems = (ArrayList<Map<String, Object>>) player.get("totems");
+            for (int i = 0; i < totems.size(); i++) {
+                Map<String, Object> totem = (Map<String, Object>) totems.get(i).get("totem");
+                Gdx.app.log("Etiqueta totem", String.valueOf(totem.get("id")));
+            }
+
+        }
+    }
     public void setID(String id){
         this.id=id;
     }
@@ -79,7 +92,9 @@ public class ServerConnection {
                 Map<String, Object> reciv = objectMapper.readValue(packet, Map.class);
                 Gdx.app.log("Etiqueta", packet);
                 if(reciv.get("type").equals("connectionTest")){
-
+                    MainGame.userID=String.valueOf(reciv.get("player"));
+                }else if(reciv.get("type").equals("totems")){
+                    updateTotems((Map<String, Object>) reciv.get("player"));
                 }
             }catch (Exception e){
                 MainGame.gameLogs.add("ERROR", "Error reading the incomming message");

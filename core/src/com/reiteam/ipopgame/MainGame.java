@@ -27,6 +27,7 @@ public class MainGame extends ApplicationAdapter {
 	private float stateTime = 0;
 	public static String grade = "";
 	public  static String username = "Player";
+	public static  String userID = "";
 	public static int success, error;
 	public static float time;
 	public static boolean gameStarted=false;
