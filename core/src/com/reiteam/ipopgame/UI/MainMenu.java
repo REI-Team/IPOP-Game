@@ -72,7 +72,7 @@ public class MainMenu extends UIScreen{
                 if(!chooseGrade.isDisabled()){
                     button_click.play();
                     backgroundMusic.stop();
-
+                    MainGame.gameStarted=true;
                     UIManager.showScreen("mpScreen");
                     MultiplayerScreen.getInstance().startConnection();
                     MultiplayerScreen.toggleMusic(true);

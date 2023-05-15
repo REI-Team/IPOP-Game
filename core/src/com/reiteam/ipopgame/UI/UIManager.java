@@ -20,8 +20,9 @@ public class UIManager {
         screens.put("Ranking",new Ranking());
         screens.put("ChooseGrade",new ChooseGrade());
         screens.put("finishGame",new FinishGame());
-        screens.put("finishGameMultiplayer", new FinishGameMultiplayer());
-        showScreen("finishGameMultiplayer");
+        //screens.put("finishGameMultiplayer", new FinishGameMultiplayer());
+        showScreen("mainScreen");
+        //finishGameMultiplayer
     }
 
     public void render(){

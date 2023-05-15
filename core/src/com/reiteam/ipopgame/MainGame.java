@@ -79,7 +79,9 @@ public class MainGame extends ApplicationAdapter {
 			GameScreen.clearTotems();
 			GameScreen.toggleMusic(false);
 			UIManager.showScreen("finishGame");
-
+			if(MultiplayerScreen.server!=null){
+				MultiplayerScreen.getInstance().stopConnection();
+			}
 		}
 		gameLogs.render(batch);
 		batch.end();
