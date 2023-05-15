@@ -81,6 +81,27 @@ public class ServerConnection {
             }
         }
     }
+    public void updatePlayers(Map<String, Object> players){
+
+        Gdx.app.log("Players pos", players.toString());
+        for (Map.Entry<String, Object> playerEntry: players.entrySet()) {
+            if(!playerEntry.getKey().equals(MainGame.userID)){
+                MultiplayerScreen.getInstance().clearPlayers();
+                Map<String, Object> player = (Map<String, Object>) playerEntry.getValue();
+                float x = Float.parseFloat(String.valueOf(player.get("x")));
+                float y = Float.parseFloat(String.valueOf(player.get("y")));
+                Gdx.app.postRunnable(new Runnable() {
+                    @Override
+                    public void run() {
+                        MultiplayerScreen.getInstance().clearTotems();
+                        MultiplayerScreen.getInstance().addPlayer(x,y);
+                    }
+                });
+            }
+
+
+        }
+    }
     public void setID(String id){
         this.id=id;
     }
@@ -129,8 +150,9 @@ public class ServerConnection {
                 else if(reciv.get("type").equals("stats")){
                     MainGame.error=Integer.parseInt(String.valueOf(reciv.get("errors")));
                     MainGame.success=Integer.parseInt(String.valueOf(reciv.get("hits")));
-                    Gdx.app.log("STAT",String.valueOf(reciv.get("errors")));
-                    Gdx.app.log("STAT",String.valueOf(reciv.get("hits")));
+                }
+                else if(reciv.get("type").equals("positions")){
+                    updatePlayers((Map<String, Object>) reciv.get("message"));
                 }
             }catch (Exception e){
                 MainGame.gameLogs.add("ERROR", "Error reading the incomming message");

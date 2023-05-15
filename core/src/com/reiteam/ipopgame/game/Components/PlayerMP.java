@@ -4,9 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -15,6 +17,7 @@ import com.badlogic.gdx.utils.Align;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.reiteam.ipopgame.MainGame;
+import com.reiteam.ipopgame.game.GameScreen;
 import com.reiteam.ipopgame.game.MultiplayerScreen;
 
 public class PlayerMP extends Actor {
@@ -26,28 +29,28 @@ public class PlayerMP extends Actor {
     private String ownerID;
     private BitmapFont font;
     private GlyphLayout glyphLayout;
+    private Animation<TextureRegion> idle;
     private String text;
     private float textWidth;
+    private float stateTime;
     private float marqueeTime = 0;
     private float maxWidth;
     private Music pop,error;
 
-    public PlayerMP(String id, String ownerID, float x, float y, String text, float maxWidth) {
-        this.img = new Texture("totem.png");
+    public PlayerMP(float x, float y, float maxWidth) {
+        this.img = new Texture("character.png");
         this.x = x;
         this.y = y;
-        this.text = text;
-        this.id=id;
-        this.ownerID=ownerID;
+
         this.maxWidth = maxWidth;
         collider = new Rectangle(x, y, 50, 60);
         font = new BitmapFont();
         font.setColor(Color.WHITE);
-        glyphLayout = new GlyphLayout();
-        glyphLayout.setText(font, text);
-        textWidth = glyphLayout.width;
         pop = Gdx.audio.newMusic(Gdx.files.internal("music/pop.mp3"));
         error = Gdx.audio.newMusic(Gdx.files.internal("music/error.mp3"));
+        TextureRegion idleFrame[] = new TextureRegion[1];
+        idleFrame[0] = new TextureRegion(img,461,0,460,560);
+        this.idle = new Animation<TextureRegion>(0.12f,idleFrame);
     }
 
     @Override
@@ -60,46 +63,20 @@ public class PlayerMP extends Actor {
     public void draw(Batch batch, float parentAlpha) {
         update();
         Vector2 screenPosition = worldToScreen(x, y, MultiplayerScreen.player);
-        batch.draw(img, screenPosition.x, screenPosition.y, 50, 60);
-        float marqueeOffset = marqueeTime * 50 % (textWidth + maxWidth);
-
-        // Define el rectángulo de recorte (clipping) para el área donde se mostrará el texto.
-        Rectangle scissor = new Rectangle(screenPosition.x, screenPosition.y + 80 - font.getCapHeight(), maxWidth, font.getCapHeight());
-
-        // Termina el dibujo de la imagen antes de aplicar el recorte.
-        batch.end();
-
-        // Aplica el recorte al área de dibujo del batch.
-        ScissorStack.pushScissors(scissor);
-
-        // Comienza el dibujo del texto con el recorte aplicado.
-        batch.begin();
-
-        if (textWidth > maxWidth) {
-            float offsetX = textWidth - marqueeOffset;
-            if (offsetX > maxWidth) {
-                offsetX = maxWidth;
-            }
-            float textX = screenPosition.x - offsetX;
-            font.draw(batch, text, textX, screenPosition.y + 80, maxWidth, Align.left, false);
-        } else {
-            float textX = screenPosition.x - marqueeOffset;
-            font.draw(batch, text, textX, screenPosition.y + 80);
-        }
-
+        stateTime += Gdx.graphics.getDeltaTime();
+        TextureRegion playerFrame = idle.getKeyFrame(stateTime,true);
+        batch.draw(playerFrame, screenPosition.x, screenPosition.y, 50, 60);
         // Termina el dibujo del texto con el recorte aplicado.
         batch.end();
 
         // Restaura el área de dibujo del batch a su estado original.
-        ScissorStack.popScissors();
 
         // Comienza el dibujo nuevamente.
         batch.begin();
     }
 
     private void update(){
-        collider.x=x;
-        collider.y=y;
+
     }
     public boolean checkCollision(Rectangle guestCollider){
         if (guestCollider.overlaps(collider)) {

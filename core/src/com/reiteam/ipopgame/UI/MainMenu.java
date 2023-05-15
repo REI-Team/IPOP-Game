@@ -37,8 +37,6 @@ public class MainMenu extends UIScreen{
         playMusic();
         button_click = Gdx.audio.newMusic(Gdx.files.internal("music/button_click.mp3"));
         stage = new Stage(MainGame.viewport);
-
-
         //Setting a background image
         Texture backgroundImage = new Texture(Gdx.files.internal("ui/background.png"));
         Image background = new Image(backgroundImage);
@@ -81,7 +79,7 @@ public class MainMenu extends UIScreen{
                 return true;
             }
         });
-        disableButton(multiplayer,false);
+        disableButton(multiplayer,true);
 
         chooseGrade = createButton("Triar cicle","ui/Colored/buttonBlue.png",(MainGame.res[0]/2)-125,MainGame.res[1]-440,250,60);
         chooseGrade.addListener(new InputListener() {
@@ -187,6 +185,7 @@ public class MainMenu extends UIScreen{
         switch (buttonName){
             case "play":
                 disableButton(play,isDisabled);
+                disableButton(multiplayer,isDisabled);
             default:
                 disableButton(play,isDisabled);
         }

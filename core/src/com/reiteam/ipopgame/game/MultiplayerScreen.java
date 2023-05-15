@@ -19,6 +19,7 @@ import com.reiteam.ipopgame.MainGame;
 import com.reiteam.ipopgame.game.Components.Image;
 import com.reiteam.ipopgame.game.Components.MarqueeLabel;
 import com.reiteam.ipopgame.game.Components.Player;
+import com.reiteam.ipopgame.game.Components.PlayerMP;
 import com.reiteam.ipopgame.game.Components.Totem;
 import com.reiteam.ipopgame.game.Components.TotemMP;
 
@@ -37,12 +38,14 @@ public class MultiplayerScreen {
     private Label time,success,error;
     public static ServerConnection server;
     public static ArrayList<TotemMP> totems;
+    public static ArrayList<PlayerMP> mpPlayers;
     public MultiplayerScreen(){
         setupFontStyle();
         mainStage=new Stage(MainGame.viewport);
         instance=this;
         // BASIC GAME OBJECTS
         totems = new ArrayList<TotemMP>();
+        mpPlayers = new ArrayList<PlayerMP>();
         img=new Image(new Texture("gamebg.png"),0, 0,2,2);
         player = new Player(new Texture("character.png"),500,500);
         gamemusic = Gdx.audio.newMusic(Gdx.files.internal("music/game_music.mp3"));
@@ -177,6 +180,17 @@ public class MultiplayerScreen {
         TotemMP t = new TotemMP(id,ownerID, x,y,name,100);
         totems.add(t);
         mainStage.addActor(t);
+    }
+    public void addPlayer(float x, float y){
+        PlayerMP p1 = new PlayerMP(x,y,4);
+        mpPlayers.add(p1);
+        mainStage.addActor(p1);
+    }
+    public void clearPlayers(){
+        for (PlayerMP players:mpPlayers) {
+            players.remove();
+        }
+        mpPlayers.clear();
     }
     public void clearTotems(){
         for (TotemMP totem:totems) {
