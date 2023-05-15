@@ -12,6 +12,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
 import com.badlogic.gdx.utils.Align;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.reiteam.ipopgame.MainGame;
 import com.reiteam.ipopgame.game.MultiplayerScreen;
 
@@ -20,6 +22,8 @@ public class TotemMP extends Actor {
     private Texture img;
     private Rectangle collider;
     private float x, y;
+    private String id;
+    private String ownerID;
     private BitmapFont font;
     private GlyphLayout glyphLayout;
     private String text;
@@ -28,11 +32,13 @@ public class TotemMP extends Actor {
     private float maxWidth;
     private Music pop,error;
 
-    public TotemMP(float x, float y, String text, float maxWidth) {
+    public TotemMP(String id, String ownerID,float x, float y, String text, float maxWidth) {
         this.img = new Texture("totem.png");
         this.x = x;
         this.y = y;
         this.text = text;
+        this.id=id;
+        this.ownerID=ownerID;
         this.maxWidth = maxWidth;
         collider = new Rectangle(x, y, 50, 60);
         font = new BitmapFont();
@@ -98,12 +104,16 @@ public class TotemMP extends Actor {
     public boolean checkCollision(Rectangle guestCollider){
         if (guestCollider.overlaps(collider)) {
             // Los rectángulos están colisionando
-            if(this.text.equals(MainGame.grade)){
-                pop.play();
-                MainGame.success+=1;
-            }else{
-                MainGame.error+=1;
-                error.play();
+            try {
+                ObjectMapper mapper = new ObjectMapper();
+                ObjectNode rootNode = mapper.createObjectNode();
+                rootNode.put("type", "removeTotem");
+                rootNode.put("totemId", id);
+                rootNode.put("id", ownerID);
+                String jsonString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(rootNode);
+                MultiplayerScreen.server.send(jsonString);
+            }catch (Exception e){
+                e.printStackTrace();
             }
             return true;
         }

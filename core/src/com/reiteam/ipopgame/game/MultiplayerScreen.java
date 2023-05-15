@@ -32,7 +32,7 @@ public class MultiplayerScreen {
     private static Music gamemusic;
     private Label.LabelStyle labelStyle;
     private Label time,success,error;
-    private ServerConnection server;
+    public static ServerConnection server;
     public static ArrayList<TotemMP> totems;
     public MultiplayerScreen(){
         setupFontStyle();
@@ -59,7 +59,6 @@ public class MultiplayerScreen {
         mainStage.addActor(time);
         mainStage.addActor(success);
         mainStage.addActor(error);
-        addtotem("INicio",-646,-360);
     }
     private void setupFontStyle(){
         BitmapFont font = new BitmapFont(); // Making a instance of BitmapFont for the font
@@ -156,8 +155,8 @@ public class MultiplayerScreen {
             }
         return IDLE;
     }
-    public void addtotem(String name,float x, float y){
-        TotemMP t = new TotemMP(x,y,name,100);
+    public void addtotem(String id,String ownerID, String name,float x, float y){
+        TotemMP t = new TotemMP(id,ownerID, x,y,name,100);
         totems.add(t);
         mainStage.addActor(t);
     }

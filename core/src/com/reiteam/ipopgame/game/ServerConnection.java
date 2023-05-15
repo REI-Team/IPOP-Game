@@ -39,6 +39,9 @@ public class ServerConnection {
         }
 
     }
+    public void send(String message){
+        socket.send(message);
+    }
     public void updateTotems(Map<String, Object> players){
         MultiplayerScreen.getInstance().clearTotems();
         Gdx.app.log("Etiqueta totem", players.toString());
@@ -58,7 +61,7 @@ public class ServerConnection {
                 Gdx.app.postRunnable(new Runnable() {
                     @Override
                     public void run() {
-                        MultiplayerScreen.getInstance().addtotem(String.valueOf(totem.get("name")),x,y);
+                        MultiplayerScreen.getInstance().addtotem(String.valueOf(totem.get("id")),playerEntry.getKey(),String.valueOf(totem.get("name")),x,y);
                     }
                 });
 
@@ -75,7 +78,7 @@ public class ServerConnection {
                 Gdx.app.postRunnable(new Runnable() {
                     @Override
                     public void run() {
-                        MultiplayerScreen.getInstance().addtotem(String.valueOf(totem.get("name")),x,y);
+                        MultiplayerScreen.getInstance().addtotem(String.valueOf(totem.get("id")),playerEntry.getKey(),String.valueOf(totem.get("name")),x,y);
                     }
                 });
 
