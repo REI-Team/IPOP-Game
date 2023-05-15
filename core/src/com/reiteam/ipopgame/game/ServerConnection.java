@@ -46,9 +46,7 @@ public class ServerConnection {
         MultiplayerScreen.getInstance().clearTotems();
         Gdx.app.log("Etiqueta totem", players.toString());
         for (Map.Entry<String, Object> playerEntry: players.entrySet()) {
-            Gdx.app.log("Etiqueta totem", "PEDRO");
             Map<String, Object> player = (Map<String, Object>) playerEntry.getValue();
-            Gdx.app.log("Etiqueta totem UWU", player.get("totems").getClass().toString());
             ArrayList<Map<String, Object>> totems = (ArrayList<Map<String, Object>>) player.get("totems");
 
             for (int i = 0; i < totems.size(); i++) {
@@ -57,7 +55,6 @@ public class ServerConnection {
                 //String x = String.valueOf(pos.get("x"));
                 float x = Float.parseFloat(String.valueOf(pos.get("x")));
                 float y = Float.parseFloat(String.valueOf(pos.get("y")));
-                Gdx.app.log("sasasasasasa",String.valueOf(totem.get("name")));
                 Gdx.app.postRunnable(new Runnable() {
                     @Override
                     public void run() {
@@ -74,7 +71,6 @@ public class ServerConnection {
                 //String x = String.valueOf(pos.get("x"));
                 float x = Float.parseFloat(String.valueOf(pos.get("x")));
                 float y = Float.parseFloat(String.valueOf(pos.get("y")));
-                Gdx.app.log("sasasasasasa",String.valueOf(totem.get("name")));
                 Gdx.app.postRunnable(new Runnable() {
                     @Override
                     public void run() {
@@ -129,6 +125,12 @@ public class ServerConnection {
                     MainGame.userID=String.valueOf(reciv.get("player"));
                 }else if(reciv.get("type").equals("totems")){
                     updateTotems((Map<String, Object>) reciv.get("message"));
+                }
+                else if(reciv.get("type").equals("stats")){
+                    MainGame.error=Integer.parseInt(String.valueOf(reciv.get("errors")));
+                    MainGame.success=Integer.parseInt(String.valueOf(reciv.get("hits")));
+                    Gdx.app.log("STAT",String.valueOf(reciv.get("errors")));
+                    Gdx.app.log("STAT",String.valueOf(reciv.get("hits")));
                 }
             }catch (Exception e){
                 MainGame.gameLogs.add("ERROR", "Error reading the incomming message");
