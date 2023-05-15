@@ -10,6 +10,7 @@ import com.github.czyzby.websocket.WebSocket;
 import com.github.czyzby.websocket.WebSocketListener;
 import com.github.czyzby.websocket.WebSockets;
 import com.reiteam.ipopgame.MainGame;
+import com.reiteam.ipopgame.game.Components.Totem;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -39,14 +40,27 @@ public class ServerConnection {
 
     }
     public void updateTotems(Map<String, Object> players){
+        Gdx.app.log("Etiqueta totem", players.toString());
         for (Map.Entry<String, Object> playerEntry: players.entrySet()) {
             Gdx.app.log("Etiqueta totem", "PEDRO");
             Map<String, Object> player = (Map<String, Object>) playerEntry.getValue();
-            Gdx.app.log("Etiqueta totem", player.get("totems").getClass().toString());
+            Gdx.app.log("Etiqueta totem UWU", player.get("totems").getClass().toString());
             ArrayList<Map<String, Object>> totems = (ArrayList<Map<String, Object>>) player.get("totems");
+
             for (int i = 0; i < totems.size(); i++) {
                 Map<String, Object> totem = (Map<String, Object>) totems.get(i).get("totem");
-                Gdx.app.log("Etiqueta totem", String.valueOf(totem.get("id")));
+                Map<String, Object> pos = (Map<String, Object>) totems.get(i).get("position");
+                //String x = String.valueOf(pos.get("x"));
+                float x = Float.parseFloat(String.valueOf(pos.get("x")));
+                float y = Float.parseFloat(String.valueOf(pos.get("x")));
+                Gdx.app.log("sasasasasasa",String.valueOf(totem.get("name")));
+                Gdx.app.postRunnable(new Runnable() {
+                    @Override
+                    public void run() {
+                        MultiplayerScreen.getInstance().addtotem(String.valueOf(totem.get("name")),x,y);
+                    }
+                });
+
             }
 
         }
@@ -94,10 +108,11 @@ public class ServerConnection {
                 if(reciv.get("type").equals("connectionTest")){
                     MainGame.userID=String.valueOf(reciv.get("player"));
                 }else if(reciv.get("type").equals("totems")){
-                    updateTotems((Map<String, Object>) reciv.get("player"));
+                    updateTotems((Map<String, Object>) reciv.get("message"));
                 }
             }catch (Exception e){
                 MainGame.gameLogs.add("ERROR", "Error reading the incomming message");
+                e.printStackTrace();
             }
 
             return false;

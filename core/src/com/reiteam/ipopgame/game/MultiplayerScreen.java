@@ -17,13 +17,14 @@ import com.reiteam.ipopgame.game.Components.Image;
 import com.reiteam.ipopgame.game.Components.MarqueeLabel;
 import com.reiteam.ipopgame.game.Components.Player;
 import com.reiteam.ipopgame.game.Components.Totem;
+import com.reiteam.ipopgame.game.Components.TotemMP;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 public class MultiplayerScreen {
     private static MultiplayerScreen instance;
-    private Stage mainStage;
+    public static Stage mainStage;
     public static Image img;
     public static Player player;
     final int IDLE=0, UP=1, DOWN=2, LEFT=3, RIGHT=4;
@@ -32,11 +33,13 @@ public class MultiplayerScreen {
     private Label.LabelStyle labelStyle;
     private Label time,success,error;
     private ServerConnection server;
+    public static ArrayList<TotemMP> totems;
     public MultiplayerScreen(){
         setupFontStyle();
         mainStage=new Stage(MainGame.viewport);
         instance=this;
         // BASIC GAME OBJECTS
+        totems = new ArrayList<TotemMP>();
         img=new Image(new Texture("gamebg.png"),0, 0,2,2);
         player = new Player(new Texture("character.png"),500,500);
         gamemusic = Gdx.audio.newMusic(Gdx.files.internal("music/game_music.mp3"));
@@ -70,6 +73,13 @@ public class MultiplayerScreen {
         img.setX(img.getWidth()-player.getX());
         img.setY(img.getHeight()-player.getY());
         mainStage.act(Gdx.graphics.getDeltaTime());
+        for (int i = 0;i<totems.size();i++) {
+            boolean collapsed = totems.get(i).checkCollision(player.getCollider());
+            if(collapsed){
+                totems.get(i).remove();
+                totems.remove(totems.get(i));
+            }
+        }
         time.setText("Time: "+String.valueOf((int) MainGame.time));
         success.setText("Success: "+String.valueOf(MainGame.success));
         error.setText("Error: "+String.valueOf(MainGame.error));
@@ -133,6 +143,11 @@ public class MultiplayerScreen {
                 }
             }
         return IDLE;
+    }
+    public void addtotem(String name,float x, float y){
+        TotemMP t = new TotemMP(x,y,name,100);
+        totems.add(t);
+        mainStage.addActor(t);
     }
     public static void toggleMusic(boolean enable){
         if(enable){
