@@ -12,6 +12,9 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Align;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.reiteam.ipopgame.MainGame;
 import com.reiteam.ipopgame.game.Components.Image;
 import com.reiteam.ipopgame.game.Components.MarqueeLabel;
@@ -99,6 +102,10 @@ public class MultiplayerScreen {
     }
 
     private void playerMovement(){
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode rootNode = mapper.createObjectNode();
+        rootNode.put("type", "playerPosition");
+
         switch (virtual_joystick_control()){
             case 0:
                 player.setPlayerMode(0);
@@ -132,6 +139,17 @@ public class MultiplayerScreen {
                 }
 
                 break;
+        }
+        try {
+            if(virtual_joystick_control()!=0){
+                rootNode.put("x", player.getX());
+                rootNode.put("y", player.getY());
+                String jsonString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(rootNode);
+                server.send(jsonString);
+            }
+
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
         }
     }
     protected int virtual_joystick_control() {
