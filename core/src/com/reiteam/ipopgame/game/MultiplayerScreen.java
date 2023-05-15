@@ -104,22 +104,33 @@ public class MultiplayerScreen {
                 player.setPlayerMode(0);
                 break;
             case 1:
-                player.setY(player.getY()-2);
-                player.setPlayerMode(4);
+                if(player.getY()>=-358){
+                    player.setY(player.getY()-2);
+                    player.setPlayerMode(4);
+                }
                 break;
             case 2:
-                player.setY(player.getY()+2);
-                player.setPlayerMode(3);
+                if(player.getY()<=1054){
+                    player.setY(player.getY()+2);
+                    player.setPlayerMode(3);
+                }
+
                 break;
             case 3:
-                player.setX(player.getX()-2);
-                player.setPlayerMode(2);
-                player.setRotation(-2);
+                if(player.getX()>=-644){
+                    player.setX(player.getX()-2);
+                    player.setPlayerMode(2);
+                    player.setRotation(-2);
+                }
+
                 break;
             case 4:
-                player.setX(player.getX()+2);
-                player.setPlayerMode(1);
-                player.setRotation(2);
+                if(player.getX()<=1870){
+                    player.setX(player.getX()+2);
+                    player.setPlayerMode(1);
+                    player.setRotation(2);
+                }
+
                 break;
         }
     }
