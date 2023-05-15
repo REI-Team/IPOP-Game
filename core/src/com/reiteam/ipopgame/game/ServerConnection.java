@@ -40,6 +40,7 @@ public class ServerConnection {
 
     }
     public void updateTotems(Map<String, Object> players){
+        MultiplayerScreen.getInstance().clearTotems();
         Gdx.app.log("Etiqueta totem", players.toString());
         for (Map.Entry<String, Object> playerEntry: players.entrySet()) {
             Gdx.app.log("Etiqueta totem", "PEDRO");

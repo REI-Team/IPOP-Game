@@ -161,6 +161,12 @@ public class MultiplayerScreen {
         totems.add(t);
         mainStage.addActor(t);
     }
+    public void clearTotems(){
+        for (TotemMP totem:totems) {
+            totem.remove();
+        }
+        totems.clear();
+    }
     public static void toggleMusic(boolean enable){
         if(enable){
             gamemusic.play();
