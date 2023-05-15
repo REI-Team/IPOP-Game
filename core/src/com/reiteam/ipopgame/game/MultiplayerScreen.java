@@ -59,6 +59,7 @@ public class MultiplayerScreen {
         mainStage.addActor(time);
         mainStage.addActor(success);
         mainStage.addActor(error);
+        addtotem("INicio",-646,-360);
     }
     private void setupFontStyle(){
         BitmapFont font = new BitmapFont(); // Making a instance of BitmapFont for the font
@@ -158,6 +159,9 @@ public class MultiplayerScreen {
     }
     public void startConnection(){
         server= new ServerConnection("nodejs-api-production-a765.up.railway.app",443);
+    }
+    public void stopConnection(){
+        server.close();
     }
     public static MultiplayerScreen getInstance(){
         return instance;

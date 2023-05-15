@@ -88,7 +88,7 @@ public class MainGame extends ApplicationAdapter {
 
 	@Override
 	public void dispose () {
-
+		MultiplayerScreen.getInstance().stopConnection();
 		batch.dispose();
 	}
 	@Override

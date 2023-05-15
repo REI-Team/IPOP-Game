@@ -52,7 +52,7 @@ public class ServerConnection {
                 Map<String, Object> pos = (Map<String, Object>) totems.get(i).get("position");
                 //String x = String.valueOf(pos.get("x"));
                 float x = Float.parseFloat(String.valueOf(pos.get("x")));
-                float y = Float.parseFloat(String.valueOf(pos.get("x")));
+                float y = Float.parseFloat(String.valueOf(pos.get("y")));
                 Gdx.app.log("sasasasasasa",String.valueOf(totem.get("name")));
                 Gdx.app.postRunnable(new Runnable() {
                     @Override
@@ -62,7 +62,23 @@ public class ServerConnection {
                 });
 
             }
+            ArrayList<Map<String, Object>> traps = (ArrayList<Map<String, Object>>) player.get("traps");
 
+            for (int i = 0; i < totems.size(); i++) {
+                Map<String, Object> totem = (Map<String, Object>) traps.get(i).get("totem");
+                Map<String, Object> pos = (Map<String, Object>) traps.get(i).get("position");
+                //String x = String.valueOf(pos.get("x"));
+                float x = Float.parseFloat(String.valueOf(pos.get("x")));
+                float y = Float.parseFloat(String.valueOf(pos.get("y")));
+                Gdx.app.log("sasasasasasa",String.valueOf(totem.get("name")));
+                Gdx.app.postRunnable(new Runnable() {
+                    @Override
+                    public void run() {
+                        MultiplayerScreen.getInstance().addtotem(String.valueOf(totem.get("name")),x,y);
+                    }
+                });
+
+            }
         }
     }
     public void setID(String id){
