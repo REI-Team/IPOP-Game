@@ -68,7 +68,7 @@ public class ServerConnection {
             }
             ArrayList<Map<String, Object>> traps = (ArrayList<Map<String, Object>>) player.get("traps");
 
-            for (int i = 0; i < totems.size(); i++) {
+            for (int i = 0; i < traps.size(); i++) {
                 Map<String, Object> totem = (Map<String, Object>) traps.get(i).get("totem");
                 Map<String, Object> pos = (Map<String, Object>) traps.get(i).get("position");
                 //String x = String.valueOf(pos.get("x"));
