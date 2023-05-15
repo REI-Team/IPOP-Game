@@ -20,7 +20,8 @@ public class UIManager {
         screens.put("Ranking",new Ranking());
         screens.put("ChooseGrade",new ChooseGrade());
         screens.put("finishGame",new FinishGame());
-        showScreen("mainScreen");
+        screens.put("finishGameMultiplayer", new FinishGameMultiplayer());
+        showScreen("finishGameMultiplayer");
     }
 
     public void render(){
@@ -44,6 +45,11 @@ public class UIManager {
             activeScreen=screenName;
             Gdx.input.setInputProcessor(screens.get(screenName).getStage());
             FinishGame.getInstance().updateStats();
+        }else if(screenName.equals("finishGameMultiplayer")){
+            activeScreen=screenName;
+            Gdx.input.setInputProcessor(screens.get(screenName).getStage());
+            FinishGameMultiplayer.getInstance().updateStats();
+            //Passem a pantalla final i ens ofereix guardar el rècord al servidor. La desconnexió implica la finalització de la partida.
         }else if(!screenName.equals("")){
             activeScreen=screenName;
             Gdx.input.setInputProcessor(screens.get(screenName).getStage());
