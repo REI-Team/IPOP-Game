@@ -93,7 +93,7 @@ public class ServerConnection {
                 Gdx.app.postRunnable(new Runnable() {
                     @Override
                     public void run() {
-                        MultiplayerScreen.getInstance().clearTotems();
+                        MultiplayerScreen.getInstance().clearPlayers();
                         MultiplayerScreen.getInstance().addPlayer(x,y);
                     }
                 });
