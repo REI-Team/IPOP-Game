@@ -44,7 +44,6 @@ public class ServerConnection {
     }
     public void updateTotems(Map<String, Object> players){
         MultiplayerScreen.getInstance().clearTotems();
-        Gdx.app.log("Etiqueta totem", players.toString());
         for (Map.Entry<String, Object> playerEntry: players.entrySet()) {
             Map<String, Object> player = (Map<String, Object>) playerEntry.getValue();
             ArrayList<Map<String, Object>> totems = (ArrayList<Map<String, Object>>) player.get("totems");
@@ -83,7 +82,6 @@ public class ServerConnection {
     }
     public void updatePlayers(Map<String, Object> players){
 
-        Gdx.app.log("Players pos", players.toString());
         for (Map.Entry<String, Object> playerEntry: players.entrySet()) {
             if(!playerEntry.getKey().equals(MainGame.userID)){
                 MultiplayerScreen.getInstance().clearPlayers();
@@ -141,7 +139,6 @@ public class ServerConnection {
             try {
                 ObjectMapper objectMapper = new ObjectMapper();
                 Map<String, Object> reciv = objectMapper.readValue(packet, Map.class);
-                Gdx.app.log("Etiqueta", packet);
                 if(reciv.get("type").equals("connectionTest")){
                     MainGame.userID=String.valueOf(reciv.get("player"));
                 }else if(reciv.get("type").equals("totems")){
